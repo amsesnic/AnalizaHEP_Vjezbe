@@ -1,0 +1,4 @@
+total 8,0K
+   0 -rw-r--r--. 1 asesnic asesnic  0 Lis  6 12:44 output_3.txt
+4,0K -rw-r--r--. 1 asesnic asesnic 41 Lis  6 12:44 Zadatak_3.sh
+4,0K -rw-r--r--. 1 asesnic asesnic 34 Lis  6 12:21 Zadatak_2.txt
