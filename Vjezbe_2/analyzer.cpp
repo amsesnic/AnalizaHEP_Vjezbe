@@ -1,29 +1,11 @@
 #include <iostream>
 #include <string>
+#include "ElementaryParticle.h"
 
 using namespace std;
 
-class ElementaryParticle {
-	public:
-		string ime;
-		double masa;
-		bool bozon;
-		void printInfo(){
-			cout << "Ime: " << ime << "\n";
-			cout << "Masa: " << masa << " GeV\n";
-			cout << "Je li " << ime << " bozon? " << bozon << "\n"; 
-		}
-		ElementaryParticle(){} //overload konstruktora
-		ElementaryParticle(string i, double m, bool b){
-			ime = i;
-			masa = m;
-			bozon = b;
-		}
-		
-};
-
 int main(){
-	ElementaryParticle higgs, top;// zboz;
+	ElementaryParticle higgs, top;
 	ElementaryParticle* Z; //pokazivac na objekt klase
 	
 	Z = new ElementaryParticle("Z bozon", 91, true); //dinamicka alokacija memorije - pokazivaci
