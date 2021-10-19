@@ -27,5 +27,6 @@ int main(){
 	Z->printInfo();
 
 	delete Z;
+	cout << "Novo\n"; 
 	return 0;
 }

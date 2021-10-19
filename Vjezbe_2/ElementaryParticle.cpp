@@ -8,7 +8,8 @@ using namespace std;
 void ElementaryParticle::printInfo(){
 	cout << "Ime: " << ime << "\n";
 	cout << "Masa: " << masa << " GeV\n";
-	cout << "Je li " << ime << " bozon? " << bozon << "\n"; 
+	cout << "Je li " << ime << " bozon? " << bozon << "\n";
+	cout << "Hej, opet novost!"; 
 }
 
 ElementaryParticle::ElementaryParticle(){
@@ -18,6 +19,6 @@ ElementaryParticle::ElementaryParticle(){
 ElementaryParticle::ElementaryParticle(string i, double m, bool b){
 			ime = i;
 			masa = m;
-			bozon = b;
+			bozon = 0;
 }
 
