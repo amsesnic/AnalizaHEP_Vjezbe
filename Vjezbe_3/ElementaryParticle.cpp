@@ -16,10 +16,10 @@ void ElementaryParticle::printInfo()
 	std::cout << "Je li " << this->ime << " bozon? " << this->bozon << "\n";
 	std::cout << "4-vektor momenta: ( E, px, py, pz ) = ( ";
 	for(int i=0; i<=3; i++){
-        std::cout << this->moment[i];
-        if(i!=3) std::cout << ", ";
-    }
-    std::cout << " )\n";
+	        std::cout << this->moment[i];
+        	if(i!=3) std::cout << ", ";
+    	}
+	std::cout << " )\n";
 }
 
 void ElementaryParticle::printInfo(std::fstream& output_file)
@@ -74,63 +74,63 @@ void ElementaryParticle::bosonDecay(ElementaryParticle* p1, ElementaryParticle* 
 	//std::cout << "Usla sam u bosonDecay()\n";
 
 	if(this->bozon == false) std::cout << "Raspad nije moguc!\n";
-    else { //ODREDUJE SVOJSTVA I 4-VEKTOR PRODUKATA
+    	else { //ODREDUJE SVOJSTVA I 4-VEKTOR PRODUKATA
 
-        r1 = ran1(idum_ptr); //radom generator daje broj u intervalu [0,1]
-        //std::cout << "random: " << r1 << "\n";
+        	r1 = ran1(idum_ptr); //radom generator daje broj u intervalu [0,1]
+        	//std::cout << "random: " << r1 << "\n";
 
-        if(r1 <= 0.214) {
-            //std::cout << "raspad na W bozone\n";
-            p1->ime = "W bozon";
-            p1->masa = 80.3;
-            p1->bozon = true;
-            p2->ime = "W bozon";
-            p2->masa = 80.3;
-            p2->bozon = true;
-        }
-        else if(r1 <= 0.278) {
-            //std::cout << "raspad na tau leptone\n";
-            p1->ime = "tau lepton";
-            p1->masa = 1776.;
-            p1->bozon = false;
-            p2->ime = "tau lepton";
-            p2->masa = 1776.;
-            p2->bozon = false;
-        }
-        else if(r1 <= 0.304) {
-            //std::cout << "raspad na Z bozone\n";
-            p1->ime = "Z bozon";
-            p1->masa = 91.18;
-            p1->bozon = true;
-            p2->ime = "Z bozon";
-            p2->masa = 91.18;
-            p2->bozon = true;
-        }
-        else {
-            //std::cout << "raspad na b kvarkove";
-            p1->ime = "b kvark";
-            p1->masa = 4.1;
-            p1->bozon = false;
-            p2->ime = "b kvark";
-            p2->masa = 4.1;
-            p2->bozon = false;
-        }
+	        if(r1 <= 0.214) {
+        		//std::cout << "raspad na W bozone\n";
+           		p1->ime = "W bozon";
+            		p1->masa = 80.3;
+			p1->bozon = true;
+			p2->ime = "W bozon";
+			p2->masa = 80.3;
+            		p2->bozon = true;
+        	}
+        	else if(r1 <= 0.278) {
+            		//std::cout << "raspad na tau leptone\n";
+            		p1->ime = "tau lepton";
+            		p1->masa = 1776.;
+            		p1->bozon = false;
+            		p2->ime = "tau lepton";
+            		p2->masa = 1776.;
+           	 	p2->bozon = false;
+        	}
+        	else if(r1 <= 0.304) {
+            		//std::cout << "raspad na Z bozone\n";
+            		p1->ime = "Z bozon";
+            		p1->masa = 91.18;
+           		p1->bozon = true;
+            		p2->ime = "Z bozon";
+            		p2->masa = 91.18;
+            		p2->bozon = true;
+        	}
+        	else {
+            		//std::cout << "raspad na b kvarkove";
+            		p1->ime = "b kvark";
+            		p1->masa = 4.1;
+            		p1->bozon = false;
+            		p2->ime = "b kvark";
+            		p2->masa = 4.1;
+            		p2->bozon = false;
+        	}
 
-            /* NASUMICNO RASPODJELI KOMPONENTE ZALETA */
-        for(i=1; i<=3; i++){
-            r1 = ran1(idum_ptr); //mogu iskoristit istu varijablu za novi slucajni broj
-            p1->moment[i] = (this->moment[i]) * r1;
-            p2->moment[i] = (this->moment[i]) * (1.0-r1); //zakon ocuvanja zaleta
+            		/* NASUMICNO RASPODJELI KOMPONENTE ZALETA */
+        	for(i=1; i<=3; i++){
+            		r1 = ran1(idum_ptr); //mogu iskoristit istu varijablu za novi slucajni broj
+            		p1->moment[i] = (this->moment[i]) * r1;
+            		p2->moment[i] = (this->moment[i]) * (1.0-r1); //zakon ocuvanja zaleta
 
-            p1->moment[0] += (p1->moment[i])*(p1->moment[i]); //konstruktor je postavio moment[0]=0.
-            p2->moment[0] += (p2->moment[i])*(p2->moment[i]);
-        }
-            /* IZRACUNAJ ENERGIJU */
-        p1->moment[0] += (p1->masa)*(p1->masa);
-        p1->moment[0] = sqrt(p1->moment[0]);
+            		p1->moment[0] += (p1->moment[i])*(p1->moment[i]); //konstruktor je postavio moment[0]=0.
+            		p2->moment[0] += (p2->moment[i])*(p2->moment[i]);
+        	}
+            		/* IZRACUNAJ ENERGIJU */
+        	p1->moment[0] += (p1->masa)*(p1->masa);
+        	p1->moment[0] = sqrt(p1->moment[0]);
 
-        p2->moment[0] += (p2->masa)*(p2->masa);
-        p2->moment[0] = sqrt(p2->moment[0]);
+        	p2->moment[0] += (p2->masa)*(p2->masa);
+        	p2->moment[0] = sqrt(p2->moment[0]);
 	}
 }
 
