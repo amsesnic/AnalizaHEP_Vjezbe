@@ -29,7 +29,7 @@ int main(){
                           //mogucih vrijednosti komponenti zaleta
 
 	for(i=0; i<N_HIGGS; i++){
-        higgs[i] = new ElementaryParticle("Higgsov bozon", 125., true);//dinamicka alokacija memorije
+        higgs[i] = new ElementaryParticle("Higgsov_bozon", 125., true);//dinamicka alokacija memorije
 
         for(j=0; j<3; j++){                   //nasumicne komponente zaleta
             p_komp[j] = ran1(&idum)*deltaP + P_MIN; //u intervalu [P_MIN,P_MAX]

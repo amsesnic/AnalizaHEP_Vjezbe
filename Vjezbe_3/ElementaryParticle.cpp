@@ -81,37 +81,37 @@ void ElementaryParticle::bosonDecay(ElementaryParticle* p1, ElementaryParticle* 
 
         if(r1 <= 0.214) {
             //std::cout << "raspad na W bozone\n";
-            p1->ime = "W bozon";
+            p1->ime = "W_bozon";
             p1->masa = 80.3;
             p1->bozon = true;
-            p2->ime = "W bozon";
+            p2->ime = "W_bozon";
             p2->masa = 80.3;
             p2->bozon = true;
         }
         else if(r1 <= 0.278) {
             //std::cout << "raspad na tau leptone\n";
-            p1->ime = "tau lepton";
+            p1->ime = "tau_lepton";
             p1->masa = 1776.;
             p1->bozon = false;
-            p2->ime = "tau lepton";
+            p2->ime = "tau_lepton";
             p2->masa = 1776.;
             p2->bozon = false;
         }
         else if(r1 <= 0.304) {
             //std::cout << "raspad na Z bozone\n";
-            p1->ime = "Z bozon";
+            p1->ime = "Z_bozon";
             p1->masa = 91.18;
             p1->bozon = true;
-            p2->ime = "Z bozon";
+            p2->ime = "Z_bozon";
             p2->masa = 91.18;
             p2->bozon = true;
         }
         else {
             //std::cout << "raspad na b kvarkove";
-            p1->ime = "b kvark";
+            p1->ime = "b_kvark";
             p1->masa = 4.1;
             p1->bozon = false;
-            p2->ime = "b kvark";
+            p2->ime = "b_kvark";
             p2->masa = 4.1;
             p2->bozon = false;
         }
