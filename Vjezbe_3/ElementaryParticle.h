@@ -13,8 +13,12 @@ class ElementaryParticle {
 
 		void printInfo();
 		void printInfo(std::fstream& output_file);
+
 		void postaviMoment(double px, double py, double pz);
+
 		void ispisiTransP();
+		void ispisiTransP(std::fstream& output_file);
+
 		void bosonDecay(ElementaryParticle* p1, ElementaryParticle* p2, long* idum_ptr);
 
 		ElementaryParticle(); //overload konstruktora

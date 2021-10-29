@@ -42,6 +42,7 @@ void ElementaryParticle::printInfo(std::fstream& output_file)
     for(int i=0; i<=3; i++){
         output_file << std::setw(15) << this->moment[i];
     }
+    this->ispisiTransP(output_file);
     output_file << "\n";
 
 
@@ -64,6 +65,13 @@ void ElementaryParticle::ispisiTransP()
 	double pT;
 	pT = sqrt(this->moment[1]*this->moment[1] + this->moment[2]*this->moment[2]);
 	std::cout << "Transverzalni zalet iznosi p_T = " << pT << "\n";
+}
+
+void ElementaryParticle::ispisiTransP(std::fstream& output_file)
+{
+	double pT;
+	pT = sqrt(this->moment[1]*this->moment[1] + this->moment[2]*this->moment[2]);
+	output_file << std::setw(15) << pT;
 }
 
 void ElementaryParticle::bosonDecay(ElementaryParticle* p1, ElementaryParticle* p2, long* idum_ptr)

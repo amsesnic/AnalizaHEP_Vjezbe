@@ -23,7 +23,7 @@ int main(){
         /* KREIRAJ I OTVORI DATOTEKU */
 	fstream fout; //stvori objekt, moze klasa ofstream za output i ifstream za input
 	fout.open(IME_DAT, ios::out); //pozovi metodu klase fstream, app=pisi na kraj
-	fout << "#        IME           MASA BOZON?              E             PX             PY             PZ\n";
+	fout << "#        IME           MASA BOZON?              E             PX             PY             PZ         transP\n";
 
 	deltaP = P_MAX-P_MIN; //pomocna varijabla za sirinu intervala
                           //mogucih vrijednosti komponenti zaleta
