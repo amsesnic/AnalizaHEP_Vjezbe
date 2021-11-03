@@ -12,10 +12,10 @@ using namespace std;
 
 class Analyzer{
 	public:
-		string particleName;
-		double mass;
-		bool ifBoson;
-		double momentum[4], transP;
+		string particleName1, particleName2;
+		double mass1, mass2;
+		bool ifBoson1, ifBoson2;
+		double momentum1[4], momentum2[4], transP1, transP2;
 		bool _skipFirstLine;
 
 		void ReadFile_FillTree(string input_file, TTree* tree);
