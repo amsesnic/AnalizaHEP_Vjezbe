@@ -8,7 +8,7 @@ int main(){
 	Analyzer* a;
 	a = new Analyzer();
 
-	a->ReadFile(IME_DAT);	
+	a->ConvertTxtToRootFile(IME_DAT);	
 
 	delete a;
 	return 0;
