@@ -43,7 +43,7 @@ void ElementaryParticle::printInfo(std::fstream& output_file)
         output_file << std::setw(15) << this->moment[i];
     }
     this->ispisiTransP(output_file);
-    output_file << "\n";
+    //output_file << "\n";
 
 
     //vracanje na stare postavke

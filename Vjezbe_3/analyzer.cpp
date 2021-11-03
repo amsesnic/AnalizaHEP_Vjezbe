@@ -46,7 +46,7 @@ int main(){
         higgs[i]->bosonDecay(decayParticle_1[i], decayParticle_2[i], &idum);
         decayParticle_1[i]->printInfo(fout);
         decayParticle_2[i]->printInfo(fout);
-        //fout << "\n";
+        fout << "\n";
 	}
 
 
