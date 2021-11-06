@@ -38,28 +38,28 @@ void Analyzer::ConvertTxtToRootFile(string txt_file)
 	tree = new TTree("tree","Boson Decay Vjezbe 4");
 
 	//Branch(name, address, string describing the leaf list); leaf: name/type
-	tree->Branch("Particle_name_1", &particleName1, "name/S");	
-	tree->Branch("Mass_1", &mass1, "mass/D");
-	tree->Branch("Is_it_a_boson_1", &ifBoson1, "ifBoson/B");
-	tree->Branch("Energy_1", &momentum1[0], "Energy/D");
-	tree->Branch("Px_1", &momentum1[1], "Px/D");
-	tree->Branch("Py_1", &momentum1[2], "Py/D");
-	tree->Branch("Pz_1", &momentum1[3], "Pz/D");
-	tree->Branch("TransP_1", &transP1, "transP/D");
+	tree->Branch("Particle_name_1", &particleName1);	
+	tree->Branch("Mass_1",          &mass1);
+	tree->Branch("Is_it_a_boson_1", &ifBoson1);
+	tree->Branch("Energy_1",        &momentum1[0]);
+	tree->Branch("Px_1",            &momentum1[1]);
+	tree->Branch("Py_1",            &momentum1[2]);
+	tree->Branch("Pz_1",            &momentum1[3]);
+	tree->Branch("TransP_1",        &transP1);
 
-	tree->Branch("Particle_name_2", &particleName2, "name/S");	
-	tree->Branch("Mass_2", &mass2, "mass/D");
-	tree->Branch("Is_it_a_boson_2", &ifBoson2, "ifBoson/B");
-	tree->Branch("Energy_2", &momentum2[0], "Energy/D");
-	tree->Branch("Px_2", &momentum2[1], "Px/D");
-	tree->Branch("Py_2", &momentum2[2], "Py/D");
-	tree->Branch("Pz_2", &momentum2[3], "Pz/D");
-	tree->Branch("TransP_2", &transP2, "transP/D");		
+	tree->Branch("Particle_name_2", &particleName2);	
+	tree->Branch("Mass_2",          &mass2);
+	tree->Branch("Is_it_a_boson_2", &ifBoson2);
+	tree->Branch("Energy_2",        &momentum2[0]);
+	tree->Branch("Px_2",            &momentum2[1]);
+	tree->Branch("Py_2",            &momentum2[2]);
+	tree->Branch("Pz_2",            &momentum2[3]);
+	tree->Branch("TransP_2",        &transP2);		
 	
 	this->ReadFile_FillTree(txt_file, tree);	
 	
-	tree->Print();
-	tree->Write();//provjeri!
+	tree->Print(); // see the summary of the tree structure
+	tree->Write(); // write the tree header into a ROOT file
 
 	delete tree;
 	delete root_file;
