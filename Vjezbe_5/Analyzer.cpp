@@ -8,13 +8,17 @@
 
 void Analyzer::PlotHistogram()
 {
-    TH1F *h = new TH1F("h", "Transverse P", 100, -100., 100.);
+    TH1F *h = new TH1F("h", "Transverse P", 100, 0., 100.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
+    TFile *fout = TFile::Open("H_TransP_1.root", "RECREATE");
     this->Loop(h);
     //h->Fill(TransP_1);
     h->Draw();
     c.Print("H_TransP_1.png");
-  
+    c.SaveAs("H_TransP_1.pdf");
+    c.Write();
+    delete h;
+    delete fout;
 }
 
 void Analyzer::Loop()
