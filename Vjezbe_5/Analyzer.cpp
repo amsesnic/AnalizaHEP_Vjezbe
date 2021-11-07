@@ -10,9 +10,11 @@ void Analyzer::PlotHistogram()
 {
     TH1F *h = new TH1F("h", "Transverse P", 100, -100., 100.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
-    this-> Loop(h);
+    this->Loop(h);
     //h->Fill(TransP_1);
     h->Draw();
+    c.Print("H_TransP_1.png");
+  
 }
 
 void Analyzer::Loop()
