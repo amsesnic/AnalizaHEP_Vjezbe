@@ -11,6 +11,7 @@
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
+#include <TH2.h>
 
 // Header file for the classes stored in the TTree if any.
 #include "string"
@@ -65,8 +66,10 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop();
+   virtual void     Loop(TH1F *h);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+           void     PlotHistogram();
 };
 
 #endif

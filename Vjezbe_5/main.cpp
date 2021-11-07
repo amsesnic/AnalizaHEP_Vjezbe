@@ -6,6 +6,7 @@ int main(){
 	
 	Analyzer *a = new Analyzer();
 	
-	a->Loop(); //dodaj u Loop() ispis varijabli
+	//a->Loop(); //dodaj u Loop() ispis varijabli
+	a->PlotHistogram();
 	return 0;
 }

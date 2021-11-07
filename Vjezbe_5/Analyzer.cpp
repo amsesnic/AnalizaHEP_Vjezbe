@@ -5,6 +5,16 @@
 #include <TCanvas.h>
 #include <iostream>
 
+
+void Analyzer::PlotHistogram()
+{
+    TH1F *h = new TH1F("h", "Transverse P", 100, -100., 100.);
+    TCanvas c("c", "V5 ZAD2", 0,0,400,300);
+    this-> Loop(h);
+    //h->Fill(TransP_1);
+    h->Draw();
+}
+
 void Analyzer::Loop()
 {
 //   In a ROOT session, you can do:
@@ -43,5 +53,24 @@ void Analyzer::Loop()
 
       std::cout << this->Particle_name_1 << "\t" << this->TransP_1 << "\n";
       std::cout << this->Particle_name_2 << "\t" << this->TransP_2 << "\n\n";
+   }
+}
+
+
+void Analyzer::Loop(TH1F *h)
+{
+//Overload funkcije Loop za punjenje histograma
+   if (fChain == 0) return;
+
+   Long64_t nentries = fChain->GetEntriesFast();
+
+   Long64_t nbytes = 0, nb = 0;
+   for (Long64_t jentry=0; jentry<nentries;jentry++) {
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      nb = fChain->GetEntry(jentry);   nbytes += nb;
+      // if (Cut(ientry) < 0) continue;
+
+      h->Fill(TransP_1);
    }
 }
