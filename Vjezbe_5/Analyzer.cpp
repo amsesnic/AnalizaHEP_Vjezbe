@@ -8,7 +8,7 @@
 
 void Analyzer::PlotHistogram()
 {
-    TH1F *h = new TH1F("h", "Transverse P", 100, 0., 100.);
+    TH1F *h = new TH1F("h", "Transverse P", 100, 0., 135.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
     TFile *fout = TFile::Open("H_TransP_1.root", "RECREATE");
     this->Loop(h);
