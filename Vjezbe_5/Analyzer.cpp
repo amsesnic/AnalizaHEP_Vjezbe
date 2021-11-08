@@ -12,8 +12,12 @@ void Analyzer::PlotHistogram()
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
     TFile *fout = TFile::Open("H_TransP_1.root", "RECREATE");
     this->Loop(h);
-    //h->Fill(TransP_1);
+    //h->Fill(TransP_1); // Punjenje je u metodi Loop(TH1F* h)
     h->Draw();
+    h->GetXaxis()->SetTitle("P_t (GeV/c)");
+    h->GetYaxis()->SetTitle("Number of particles");
+    h->SetLineColor(kMagenta);
+    h->SetFillColor(kMagenta);
     c.Print("H_TransP_1.png");
     c.SaveAs("H_TransP_1.pdf");
     c.Write();
