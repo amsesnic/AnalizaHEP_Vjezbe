@@ -26,6 +26,8 @@ void Analyzer::PlotHistogram()
     TLegend* leg = new TLegend(0.75, 0.6, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
     //leg->SetHeader("");
     leg->AddEntry(h, "Higss Boson Decay Simulation", "f");
+    leg->Draw();
+
     c.Print("H_TransP_1.png");
     c.SaveAs("H_TransP_1.pdf");
     c.Write();
