@@ -66,7 +66,7 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop();
-   virtual void     Loop(TH1F *h);
+   virtual void     Loop(TH1F *h1, TH1F *h2);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
            void     PlotHistogram();

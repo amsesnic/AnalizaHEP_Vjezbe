@@ -9,30 +9,43 @@
 
 void Analyzer::PlotHistogram()
 {
-    TH1F *h = new TH1F("h", "Transverse P 1", 100, 0., 135.);
+    TH1F *h1 = new TH1F("h1", "Transverse P 1", 100, 0., 135.);
+    TH1F *h2 = new TH1F("h2", "Transverse P 2", 100, 0., 135.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
-    TFile *fout = TFile::Open("H_TransP_1.root", "RECREATE");
-    this->Loop(h);
+    TFile *fout = TFile::Open("H_TransP_12.root", "RECREATE");
+    
+    this->Loop(h1, h2);
     //h->Fill(TransP_1); // Punjenje je u metodi Loop(TH1F* h)
-    h->Draw();
-    h->GetXaxis()->SetTitle("P_t (GeV/c)");
-    h->GetYaxis()->SetTitle("Number of particles");
-    h->SetLineColor(kMagenta);
-    h->SetFillColor(kMagenta);
-    h->SetStats(0);
-    h->SetTitle("Transverse momentum");
+    h1->GetXaxis()->SetTitle("P_t (GeV/c)");
+    h1->GetYaxis()->SetTitle("Number of particles");
+    h1->SetLineColor(kMagenta);
+    h1->SetFillColor(kMagenta);
+    h1->SetStats(0);
+    h1->SetTitle("Transverse momentum");
+    h1->Draw();
+
+    //h2->GetXaxis()->SetTitle("P_t (GeV/c)");
+    //h2->GetYaxis()->SetTitle("Number of particles");
+    h2->SetLineColor(kGreen+2);
+    //h2->SetFillColor(kMagenta);
+    h2->SetStats(0);
+    h2->SetTitle("");
+    h2->Draw("same"); // same canvas!
 
     //Create legend
     TLegend* leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
-    //leg->SetHeader("");
-    leg->AddEntry(h, "Higgs boson decay simulation", "f");
+    leg->SetHeader("Higgs boson decay simulation");
+    leg->AddEntry(h1, "Decay Particle 1", "f");
+    leg->AddEntry(h2, "Decay Particle 2", "l");
     leg->Draw();
 
     c.Print("H_TransP_1.png");
     c.SaveAs("H_TransP_1.pdf");
-    c.Write();
-    delete h;
+    c.Write(); //write to root file (from canvas!)
+    delete h1;
+    delete h2;
     delete fout;
+    delete leg;
 }
 
 void Analyzer::Loop()
@@ -77,7 +90,7 @@ void Analyzer::Loop()
 }
 
 
-void Analyzer::Loop(TH1F *h)
+void Analyzer::Loop(TH1F *h1, TH1F *h2)
 {
 //Overload funkcije Loop za punjenje histograma
    if (fChain == 0) return;
@@ -91,6 +104,7 @@ void Analyzer::Loop(TH1F *h)
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-      h->Fill(TransP_1);
+      h1->Fill(TransP_1);
+      h2->Fill(TransP_2);
    }
 }
