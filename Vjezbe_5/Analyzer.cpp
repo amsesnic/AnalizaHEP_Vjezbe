@@ -34,13 +34,13 @@ void Analyzer::PlotHistogram()
 
     //Create legend
     TLegend* leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
-    leg->SetHeader("Higgs boson decay simulation");
+    leg->SetHeader("Higgs boson decay simulation", "C");
     leg->AddEntry(h1, "Decay Particle 1", "f");
     leg->AddEntry(h2, "Decay Particle 2", "l");
     leg->Draw();
 
-    c.Print("H_TransP_1.png");
-    c.SaveAs("H_TransP_1.pdf");
+    c.Print("H_TransP_12.png");
+    c.SaveAs("H_TransP_12.pdf");
     c.Write(); //write to root file (from canvas!)
     delete h1;
     delete h2;
