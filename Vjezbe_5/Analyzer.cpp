@@ -23,9 +23,9 @@ void Analyzer::PlotHistogram()
     h->SetTitle("Transverse momentum");
 
     //Create legend
-    TLegend* leg = new TLegend(0.6, 0.8, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
+    TLegend* leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
     //leg->SetHeader("");
-    leg->AddEntry(h, "Higss Boson Decay Simulation", "f");
+    leg->AddEntry(h, "Higgs boson decay simulation", "f");
     leg->Draw();
 
     c.Print("H_TransP_1.png");
