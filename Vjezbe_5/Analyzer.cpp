@@ -3,6 +3,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
+#include <TLegend.h>
 #include <iostream>
 
 
@@ -18,6 +19,13 @@ void Analyzer::PlotHistogram()
     h->GetYaxis()->SetTitle("Number of particles");
     h->SetLineColor(kMagenta);
     h->SetFillColor(kMagenta);
+    h->SetStats(0);
+    h->SetTitle("Transverse momentum");
+
+    //Create legend
+    TLegend* leg = new TLegend(0.75, 0.6, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
+    //leg->SetHeader("");
+    leg->AddEntry(h, "Higss Boson Decay Simulation", "f");
     c.Print("H_TransP_1.png");
     c.SaveAs("H_TransP_1.pdf");
     c.Write();
