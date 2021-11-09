@@ -14,36 +14,42 @@ void Analyzer::PlotHistogram()
     TH1F *h1 = new TH1F("h1", "Transverse P 1", 70, 0., 140.);
     TH1F *h2 = new TH1F("h2", "Transverse P 2", 70, 0., 140.);
     TH1F *hH = new TH1F("hH", "Transverse P Higgs", 70, 0., 140.);
-    TCanvas c("c", "V5 ZAD2", 0,0,400,300);
-    TFile *fout = TFile::Open("H_TransP_12+H.root", "RECREATE");
+    TCanvas c("c", "Transverse momentum", 0,0,400,300);
+    TFile *fout = TFile::Open("H_TransP_12+H_fin.root", "RECREATE");
+
+    c.Divide(2, 1, 0, 0);  //divide canvas into 2 sub-pads
+    gStyle->SetOptStat(0);  //remove statistics boxes
     
-    this->Loop(h1, h2, hH);
-    //h->Fill(TransP_1); // Punjenje je u metodi Loop(TH1F* h)
+    this->Loop(h1, h2, hH); // Punjenje je u metodi Loop(TH1F* h...)
+    
+    c.cd(1); //set sub-pad 1 as current pad (pointer gPad) DRAW HERE!
     h1->GetXaxis()->SetTitle("P_t (GeV/c)");
     h1->GetYaxis()->SetTitle("Number of particles");
     h1->SetLineColor(kMagenta);
     h1->SetFillColor(kMagenta);
-    h1->SetStats(0);
-    h1->SetTitle("Transverse momentum");
+    //h1->SetStats(0);
+    h1->SetTitle("Transverse momentum of decay particles");
     h1->Draw();
 
     //h2->GetXaxis()->SetTitle("P_t (GeV/c)");
     //h2->GetYaxis()->SetTitle("Number of particles");
     h2->SetLineColor(kGreen+2);
     //h2->SetFillColor(kMagenta);
-    h2->SetStats(0);
+    //h2->SetStats(0);
     h2->SetTitle("");
-    h2->Draw("same"); // same canvas!
+    h2->Draw("same"); // same canvas, aka sub-pad!
 
-    //hH->GetXaxis()->SetTitle("P_t (GeV/c)");
+    c.cd(2); // SAD CRTAJ NA sub-pad 2
+    hH->GetXaxis()->SetTitle("P_t (GeV/c)");
     //hH->GetYaxis()->SetTitle("Number of particles");
     hH->SetLineColor(kBlack);
     //hH->SetFillColor(kMagenta);
-    hH->SetStats(0);
-    hH->SetTitle("");
-    hH->Draw("same"); // same canvas!
+    //hH->SetStats(0);
+    hH->SetTitle("Transverse momentum of Higgs boson");
+    hH->Draw();
 
-    //Create legend
+    //Create legend on current pad (gPad)!
+    c.cd();
     TLegend* leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
     leg->SetHeader("Higgs boson decay simulation", "C");
     leg->AddEntry(h1, "Decay Particle 1", "f");
@@ -51,9 +57,10 @@ void Analyzer::PlotHistogram()
     leg->AddEntry(hH, "Higgs boson", "l");
     leg->Draw();
 
-    c.Print("H_TransP_12+H.png");
-    c.SaveAs("H_TransP_12+H.pdf");
+    c.Print("H_TransP_12+H_fin.png");
+    c.SaveAs("H_TransP_12+H_fin.pdf");
     c.Write(); //write to root file (from canvas!)
+    
     delete h1;
     delete h2;
     delete hH;
