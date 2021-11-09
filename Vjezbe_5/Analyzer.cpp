@@ -4,6 +4,8 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TLegend.h>
+#include <TLorentzVector.h>
+#include <cmath>
 #include <iostream>
 
 
@@ -11,10 +13,11 @@ void Analyzer::PlotHistogram()
 {
     TH1F *h1 = new TH1F("h1", "Transverse P 1", 135, 0., 135.);
     TH1F *h2 = new TH1F("h2", "Transverse P 2", 135, 0., 135.);
+    TH1F *hH = new TH1F("hH", "Transverse P Higgs", 135, 0., 135.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
-    TFile *fout = TFile::Open("H_TransP_12.root", "RECREATE");
+    TFile *fout = TFile::Open("H_TransP_12+H.root", "RECREATE");
     
-    this->Loop(h1, h2);
+    this->Loop(h1, h2, hH);
     //h->Fill(TransP_1); // Punjenje je u metodi Loop(TH1F* h)
     h1->GetXaxis()->SetTitle("P_t (GeV/c)");
     h1->GetYaxis()->SetTitle("Number of particles");
@@ -32,18 +35,28 @@ void Analyzer::PlotHistogram()
     h2->SetTitle("");
     h2->Draw("same"); // same canvas!
 
+    //hH->GetXaxis()->SetTitle("P_t (GeV/c)");
+    //hH->GetYaxis()->SetTitle("Number of particles");
+    hH->SetLineColor(kBlack);
+    //hH->SetFillColor(kMagenta);
+    hH->SetStats(0);
+    hH->SetTitle("");
+    hH->Draw("same"); // same canvas!
+
     //Create legend
     TLegend* leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
     leg->SetHeader("Higgs boson decay simulation", "C");
     leg->AddEntry(h1, "Decay Particle 1", "f");
     leg->AddEntry(h2, "Decay Particle 2", "l");
+    leg->AddEntry(hH, "Higgs boson", "l");
     leg->Draw();
 
-    c.Print("H_TransP_12.png");
-    c.SaveAs("H_TransP_12.pdf");
+    c.Print("H_TransP_12+H.png");
+    c.SaveAs("H_TransP_12+H.pdf");
     c.Write(); //write to root file (from canvas!)
     delete h1;
     delete h2;
+    delete hH;
     delete fout;
     delete leg;
 }
@@ -94,10 +107,13 @@ void Analyzer::Loop()
 }
 
 
-void Analyzer::Loop(TH1F *h1, TH1F *h2)
+void Analyzer::Loop(TH1F *h1, TH1F *h2, TH1F *hH)
 {
 //Overload funkcije Loop za punjenje histograma
    if (fChain == 0) return;
+
+   TLorentzVector p1, p2, pH;
+   Double_t       TransP_H;
 
    Long64_t nentries = fChain->GetEntriesFast();
 
@@ -110,5 +126,14 @@ void Analyzer::Loop(TH1F *h1, TH1F *h2)
 
       h1->Fill(TransP_1);
       h2->Fill(TransP_2);
+
+      //Four-momentum calculation
+      p1.SetPxPyPzE(Px_1, Py_1, Pz_1, Energy_1);
+      p2.SetPxPyPzE(Px_2, Py_2, Pz_2, Energy_2);
+      pH = p1 + p2;
+      //TransP_H = pH.Pt(); //ugradjena metoda za trans zalet
+      TransP_H = sqrt( p1.Px()*p1.Px() + p2.Px()*p2.Px() );
+
+      hH->Fill(TransP_H);
    }
 }
