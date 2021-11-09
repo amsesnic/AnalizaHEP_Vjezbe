@@ -11,7 +11,7 @@
 
 void Analyzer::PlotHistogram()
 {
-    TCanvas c("c", "Transverse momentum", 0,0,500,300);
+    TCanvas c("c", "Transverse momentum", 0,0,700,300);
     TH1F *h1     = new TH1F("h1", "Transverse P 1",     70, 0., 140.);
     TH1F *h2     = new TH1F("h2", "Transverse P 2",     70, 0., 140.);
     TH1F *hH     = new TH1F("hH", "Transverse P Higgs", 70, 0., 140.);
@@ -19,7 +19,7 @@ void Analyzer::PlotHistogram()
     TLegend *leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
     TLegend *leg2= new TLegend(0.6, 0.7, 0.9, 0.9); 
 
-    c.SetLeftMargin(0.1);
+    c.SetLeftMargin(0.15);
     c.Divide(2, 1);  //divide canvas into 2 sub-pads
     gStyle->SetOptStat(0);       //remove statistics boxes
     
