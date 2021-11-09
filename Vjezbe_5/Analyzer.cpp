@@ -9,8 +9,8 @@
 
 void Analyzer::PlotHistogram()
 {
-    TH1F *h1 = new TH1F("h1", "Transverse P 1", 100, 0., 135.);
-    TH1F *h2 = new TH1F("h2", "Transverse P 2", 100, 0., 135.);
+    TH1F *h1 = new TH1F("h1", "Transverse P 1", 135, 0., 135.);
+    TH1F *h2 = new TH1F("h2", "Transverse P 2", 135, 0., 135.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
     TFile *fout = TFile::Open("H_TransP_12.root", "RECREATE");
     
