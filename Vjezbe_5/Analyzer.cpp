@@ -84,8 +84,12 @@ void Analyzer::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-      std::cout << this->Particle_name_1 << "\t" << this->TransP_1 << "\n";
-      std::cout << this->Particle_name_2 << "\t" << this->TransP_2 << "\n\n";
+      if(jentry%100==0) {
+         fChain->Show(); //ovo ok radi
+
+         std::cout << Particle_name_1->c_str() << "  " << this->TransP_1 << "\n";
+         std::cout << Particle_name_2->c_str() << "  " << this->TransP_2 << "\n\n"; //ako nema ->c_str() onda printa adrese varijabli, ne imena
+      }
    }
 }
 

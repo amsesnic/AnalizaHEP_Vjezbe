@@ -25,6 +25,7 @@ public :
 
    // Declaration of leaf types
    std::string         *Particle_name_1;
+   //TString         Particle_name_1;
    Double_t        Mass_1;
    Bool_t          Is_it_a_boson_1;
    Double_t        Energy_1;
@@ -33,6 +34,7 @@ public :
    Double_t        Pz_1;
    Double_t        TransP_1;
    std::string         *Particle_name_2;
+   //TString         Particle_name_2;
    Double_t        Mass_2;
    Bool_t          Is_it_a_boson_2;
    Double_t        Energy_2;
