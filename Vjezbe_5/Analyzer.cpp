@@ -11,9 +11,9 @@
 
 void Analyzer::PlotHistogram()
 {
-    TH1F *h1 = new TH1F("h1", "Transverse P 1", 135, 0., 135.);
-    TH1F *h2 = new TH1F("h2", "Transverse P 2", 135, 0., 135.);
-    TH1F *hH = new TH1F("hH", "Transverse P Higgs", 135, 0., 135.);
+    TH1F *h1 = new TH1F("h1", "Transverse P 1", 45, 0., 135.);
+    TH1F *h2 = new TH1F("h2", "Transverse P 2", 45, 0., 135.);
+    TH1F *hH = new TH1F("hH", "Transverse P Higgs", 45, 0., 135.);
     TCanvas c("c", "V5 ZAD2", 0,0,400,300);
     TFile *fout = TFile::Open("H_TransP_12+H.root", "RECREATE");
     
