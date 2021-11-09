@@ -19,7 +19,7 @@ void Analyzer::PlotHistogram()
     TLegend *leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
 
 
-    c.Divide(2, 1, 0, 0);  //divide canvas into 2 sub-pads
+    c.Divide(2, 1, 0.01, 0);  //divide canvas into 2 sub-pads
     gStyle->SetOptStat(0);       //remove statistics boxes
     
     this->Loop(h1, h2, hH); // Punjenje je u metodi Loop(TH1F* h...)
@@ -42,6 +42,7 @@ void Analyzer::PlotHistogram()
     //leg->AddEntry(hH, "Higgs boson", "l");
     leg->Draw();
 
+    /************************************************/
     c.cd(2); // SAD CRTAJ NA sub-pad 2
     hH->GetXaxis()->SetTitle("P_t (GeV/c)");
     //hH->GetYaxis()->SetTitle("Number of particles");
@@ -52,6 +53,7 @@ void Analyzer::PlotHistogram()
 
     //Draw legend on current pad (gPad)!
     //c.cd();
+    leg->Clear(); //ocisti postojecu legendu
     //leg->SetHeader("Higgs boson decay simulation", "C");
     leg->AddEntry(hH, "Higgs boson", "l");
     leg->Draw();
