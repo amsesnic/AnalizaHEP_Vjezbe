@@ -17,13 +17,14 @@ void Analyzer::PlotHistogram()
     TH1F *hH     = new TH1F("hH", "Transverse P Higgs", 70, 0., 140.);
     TFile *fout  = TFile::Open("H_TransP_12+H_fin.root", "RECREATE");
     TLegend *leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
-
+    TLegend *leg2= new TLegend(0.6, 0.7, 0.9, 0.9); 
 
     c.Divide(2, 1, 0.01, 0);  //divide canvas into 2 sub-pads
     gStyle->SetOptStat(0);       //remove statistics boxes
     
     this->Loop(h1, h2, hH); // Punjenje je u metodi Loop(TH1F* h...)
     
+    /**************** LIJEVI PANEL ******************/
     c.cd(1); //set sub-pad 1 as current pad (pointer gPad) DRAW() HERE!
     h1->GetXaxis()->SetTitle("P_t (GeV/c)");
     h1->GetYaxis()->SetTitle("Number of particles");
@@ -42,7 +43,7 @@ void Analyzer::PlotHistogram()
     //leg->AddEntry(hH, "Higgs boson", "l");
     leg->Draw();
 
-    /************************************************/
+    /***************** DESNI PANEL ******************/
     c.cd(2); // SAD CRTAJ NA sub-pad 2
     hH->GetXaxis()->SetTitle("P_t (GeV/c)");
     //hH->GetYaxis()->SetTitle("Number of particles");
@@ -51,13 +52,12 @@ void Analyzer::PlotHistogram()
     hH->SetTitle("Transverse momentum of Higgs boson");
     hH->Draw();
 
-    //Draw legend on current pad (gPad)!
-    //c.cd();
-    //leg->Clear(); //ocisti postojecu legendu
-    //leg->SetHeader("Higgs boson decay simulation", "C");
-    //leg->AddEntry(hH, "Higgs boson", "lf");
-    //leg->Draw();
-    gPad->BuildLegend(); // napravi legendu na drugom sub-padu (c_2 automatsko ime)
+    //Draw legend on current pad (gPad)! Moze i preko drugog pointera na TLegend
+    //gPad->BuildLegend(0.6, 0.7, 0.9, 0.9, "", "f"); //napravi legendu na drugom sub-padu (c_2 automatsko ime)
+                                                      //treba prominit natpis kraj simbola
+    leg2->AddEntry(hH, "Higgs boson", "lf");
+    leg2->Draw();
+    /***********************************************/
 
     c.Print("H_TransP_12+H_fin.png");
     c.SaveAs("H_TransP_12+H_fin.pdf");
@@ -68,6 +68,7 @@ void Analyzer::PlotHistogram()
     delete hH;
     delete fout;
     delete leg;
+    delete leg2;
 }
 
 void Analyzer::Loop()
