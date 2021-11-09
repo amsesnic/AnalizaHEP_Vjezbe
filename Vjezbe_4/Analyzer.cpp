@@ -39,13 +39,13 @@ void Analyzer::ConvertTxtToRootFile(string txt_file)
 
 	//Branch(name, address, string describing the leaf list); leaf: name/type
 	tree->Branch("Particle_name_1", &particleName1);	
-	tree->Branch("Mass_1",          &mass1);
-	tree->Branch("Is_it_a_boson_1", &ifBoson1);
-	tree->Branch("Energy_1",        &momentum1[0]);
-	tree->Branch("Px_1",            &momentum1[1]);
-	tree->Branch("Py_1",            &momentum1[2]);
-	tree->Branch("Pz_1",            &momentum1[3]);
-	tree->Branch("TransP_1",        &transP1);
+	tree->Branch("Mass_1",          &mass1,         "mass1/D");
+	tree->Branch("Is_it_a_boson_1", &ifBoson1,      "ifBoson1/O");
+	tree->Branch("Energy_1",        &momentum1[0],  "energy1/D");
+	tree->Branch("Px_1",            &momentum1[1],  "px_1/D");
+	tree->Branch("Py_1",            &momentum1[2],  "py_1/D");
+	tree->Branch("Pz_1",            &momentum1[3],  "pz_1/D");
+	tree->Branch("TransP_1",        &transP1,       "pt_1/D");
 
 	tree->Branch("Particle_name_2", &particleName2);	
 	tree->Branch("Mass_2",          &mass2);
