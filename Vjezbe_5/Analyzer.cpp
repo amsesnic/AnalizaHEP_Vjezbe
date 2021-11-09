@@ -19,6 +19,7 @@ void Analyzer::PlotHistogram()
     TLegend *leg = new TLegend(0.6, 0.7, 0.9, 0.9); // constructor takes coord of lower left and upper right corners
     TLegend *leg2= new TLegend(0.6, 0.7, 0.9, 0.9); 
 
+    c.SetLeftMargin(0.1);
     c.Divide(2, 1);  //divide canvas into 2 sub-pads
     gStyle->SetOptStat(0);       //remove statistics boxes
     
