@@ -93,7 +93,7 @@ void Analyzer::PlotHistogram()
     h_LepPt[1]->Draw("same");
 
     //legenda
-    TLegend *leg_Pt = new TLegend(0.7,0.8,0.9,0.9);
+    TLegend *leg_Pt = new TLegend(0.6,0.7,0.9,0.9);
     std::string opis;
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
@@ -124,7 +124,7 @@ void Analyzer::PlotHistogram()
     h_LepEta[1]->Draw("same");
 
     //legenda
-    TLegend *leg_Eta = new TLegend(0.7,0.8,0.9,0.9);
+    TLegend *leg_Eta = new TLegend(0.6,0.7,0.9,0.9);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_Eta->AddEntry(h_LepEta[i], opis.c_str(), "l");
@@ -154,7 +154,7 @@ void Analyzer::PlotHistogram()
     h_LepPhi[1]->Draw("same");
 
     //legenda
-    TLegend *leg_Phi = new TLegend(0.7,0.8,0.9,0.9);
+    TLegend *leg_Phi = new TLegend(0.6,0.1,0.9,0.2);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_Phi->AddEntry(h_LepPhi[i], opis.c_str(), "l");
@@ -184,7 +184,7 @@ void Analyzer::PlotHistogram()
     h_LepBDT[1]->Draw("same");  
 
     //legenda
-    TLegend *leg_BDT = new TLegend(0.7,0.8,0.9,0.9);
+    TLegend *leg_BDT = new TLegend(0.6,0.7,0.9,0.9);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_BDT->AddEntry(h_LepBDT[i], opis.c_str(), "l");
