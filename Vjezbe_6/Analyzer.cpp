@@ -7,8 +7,8 @@
 
 void Analyzer::PlotHistogram()
 {
-    TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1000, 1000);
-    TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 1000, 1000);
+    TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1200, 1200);
+    TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 1000, 800);
    
     TH1F *h_Higgs    = new TH1F("h_Higgs", "h_Higgs", 100, 100., 150.);
     TH1F *h_LepPt[4];
@@ -22,13 +22,13 @@ void Analyzer::PlotHistogram()
         h_LepPt[i]  = new TH1F(naslov.c_str(),  naslov.c_str(),  100, 0., 100.);
 
         naslov = "h_LepEta"+std::to_string(i);
-        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, 0., 100.);
+        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -10., 10.);
 
         naslov = "h_LepPhi"+std::to_string(i);
-        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, 0., 100.);
+        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -10., 10.);
 
         naslov = "h_LepBDT"+std::to_string(i);
-        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, 0., 100.);
+        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -10., 10.);
     }
     
     /*******   NAPUNI HISTOGRAME U Loop   *******/
@@ -155,6 +155,9 @@ void Analyzer::PlotHistogram()
     c->Print("4l-distribucije.png");
     
     c_H->cd();
+    h_Higgs->SetTitle("Mass 4 leptons");
+    h_Higgs->GetXaxis()->SetTitle("m_4l");
+    h_Higgs->GetYaxis()->SetTitle("Number of particles");
     h_Higgs->Draw();
     c_H->Print("Higgs.png");
 
