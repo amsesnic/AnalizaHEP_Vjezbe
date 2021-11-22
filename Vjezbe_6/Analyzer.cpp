@@ -165,23 +165,23 @@ void Analyzer::PlotHistogram()
     c->cd(4);
     gPad->SetLeftMargin(0.15);
 
-    h_LepBDT[1]->SetLineColor(kGreen+2);
-    h_LepBDT[1]->SetTitle("");
-    h_LepBDT[1]->Draw();
+    h_LepBDT[0]->GetXaxis()->SetTitle("BDT");
+    h_LepBDT[0]->GetYaxis()->SetTitle("Number of particles");
+    h_LepBDT[0]->SetLineColor(kRed+1);
+    h_LepBDT[0]->SetTitle("BDT");
+    h_LepBDT[0]->Draw();
 
-    h_LepBDT[2]->GetXaxis()->SetTitle("BDT");
-    h_LepBDT[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepBDT[2]->SetLineColor(kBlue+1);
-    h_LepBDT[2]->SetTitle("BDT");
+    h_LepBDT[2]->SetTitle("");
     h_LepBDT[2]->Draw("same");
 
     h_LepBDT[3]->SetLineColor(kMagenta+2);
     h_LepBDT[3]->SetTitle("");
     h_LepBDT[3]->Draw("same");
 
-    h_LepBDT[0]->SetLineColor(kRed+1);
-    h_LepBDT[0]->SetTitle("");
-    h_LepBDT[0]->Draw("same");   
+    h_LepBDT[1]->SetLineColor(kGreen+2);
+    h_LepBDT[1]->SetTitle("");
+    h_LepBDT[1]->Draw("same");  
 
     //legenda
     TLegend *leg_BDT = new TLegend(0.7,0.8,0.9,0.9);
