@@ -199,7 +199,7 @@ void Analyzer::PlotHistogram()
     gPad->SetLeftMargin(0.15);
 
     h_Higgs->SetTitle("4 leptons mass");
-    h_Higgs->GetXaxis()->SetTitle("m_4l");
+    h_Higgs->GetXaxis()->SetTitle("m_4l (GeV)");
     h_Higgs->GetYaxis()->SetTitle("Number of particles");
     h_Higgs->Draw();
     c_H->Print("4l-masa.png");
