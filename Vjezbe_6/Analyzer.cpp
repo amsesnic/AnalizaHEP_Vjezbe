@@ -11,7 +11,7 @@ void Analyzer::PlotHistogram()
     TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1000, 800);
     TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 800, 600);
    
-    TH1F *h_Higgs    = new TH1F("h_Higgs", "h_Higgs", 100, 100., 150.);
+    TH1F *h_Higgs    = new TH1F("h_Higgs", "h_Higgs", 25, 90., 140.);
     TH1F *h_LepPt[4];
     TH1F *h_LepEta[4];
     TH1F *h_LepPhi[4];
@@ -20,16 +20,16 @@ void Analyzer::PlotHistogram()
     std::string naslov;
     for(i=0; i<4; i++){
         naslov = "h_LepPt"+std::to_string(i);
-        h_LepPt[i]  = new TH1F(naslov.c_str(),  naslov.c_str(),  100, 0., 100.);
+        h_LepPt[i]  = new TH1F(naslov.c_str(),  naslov.c_str(),  50, 0., 100.);
 
         naslov = "h_LepEta"+std::to_string(i);
-        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -4., 4.);
+        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 40, -4., 4.);
 
         naslov = "h_LepPhi"+std::to_string(i);
-        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -5., 5.);
+        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 50, -5., 5.);
 
         naslov = "h_LepBDT"+std::to_string(i);
-        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -2., 10.);
+        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 48, -2., 10.);
     }
     
     /*******   NAPUNI HISTOGRAME U Loop   *******/
@@ -93,7 +93,7 @@ void Analyzer::PlotHistogram()
     h_LepPt[1]->Draw("same");
 
     //legenda
-    TLegend *leg_Pt = new TLegend(0.7,0.8,1.0,1.0);
+    TLegend *leg_Pt = new TLegend(0.7,0.8,0.9,0.9);
     std::string opis;
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
@@ -124,7 +124,7 @@ void Analyzer::PlotHistogram()
     h_LepEta[1]->Draw("same");
 
     //legenda
-    TLegend *leg_Eta = new TLegend(0.7,0.8,1.0,1.0);
+    TLegend *leg_Eta = new TLegend(0.7,0.8,0.9,0.9);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_Eta->AddEntry(h_LepEta[i], opis.c_str(), "l");
@@ -154,7 +154,7 @@ void Analyzer::PlotHistogram()
     h_LepPhi[1]->Draw("same");
 
     //legenda
-    TLegend *leg_Phi = new TLegend(0.7,0.8,1.0,1.0);
+    TLegend *leg_Phi = new TLegend(0.7,0.8,0.9,0.9);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_Phi->AddEntry(h_LepPhi[i], opis.c_str(), "l");
@@ -165,11 +165,15 @@ void Analyzer::PlotHistogram()
     c->cd(4);
     gPad->SetLeftMargin(0.15);
 
+    h_LepBDT[1]->SetLineColor(kGreen+2);
+    h_LepBDT[1]->SetTitle("");
+    h_LepBDT[1]->Draw();
+
     h_LepBDT[2]->GetXaxis()->SetTitle("BDT");
     h_LepBDT[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepBDT[2]->SetLineColor(kBlue+1);
     h_LepBDT[2]->SetTitle("BDT");
-    h_LepBDT[2]->Draw();
+    h_LepBDT[2]->Draw("same");
 
     h_LepBDT[3]->SetLineColor(kMagenta+2);
     h_LepBDT[3]->SetTitle("");
@@ -177,14 +181,10 @@ void Analyzer::PlotHistogram()
 
     h_LepBDT[0]->SetLineColor(kRed+1);
     h_LepBDT[0]->SetTitle("");
-    h_LepBDT[0]->Draw("same");
-    
-    h_LepBDT[1]->SetLineColor(kGreen+2);
-    h_LepBDT[1]->SetTitle("");
-    h_LepBDT[1]->Draw("same");
+    h_LepBDT[0]->Draw("same");   
 
     //legenda
-    TLegend *leg_BDT = new TLegend(0.7,0.8,1.0,1.0);
+    TLegend *leg_BDT = new TLegend(0.7,0.8,0.9,0.9);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_BDT->AddEntry(h_LepBDT[i], opis.c_str(), "l");
