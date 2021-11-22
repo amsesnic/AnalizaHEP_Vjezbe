@@ -65,12 +65,13 @@ void Analyzer::PlotHistogram()
     }
     /*****************************************/
 
-    c->SetLeftMargin(0.25);
+
     c->Divide(2,2);
     gStyle->SetOptStat(0);
 
     /******* PANEL 1 (gore lijevo): LepPt *******/
     c->cd(1);
+    c->SetLeftMargin(0.15);
 
     h_LepPt[2]->GetXaxis()->SetTitle("Pt (GeV/c)");
     h_LepPt[2]->GetYaxis()->SetTitle("Number of particles");
@@ -92,6 +93,7 @@ void Analyzer::PlotHistogram()
    
     /******* PANEL 2 (gore desno): LepEta *******/
     c->cd(2);
+    c->SetLeftMargin(0.15);
     h_LepEta[2]->GetXaxis()->SetTitle("Eta");
     h_LepEta[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepEta[2]->SetLineColor(kBlue+1);
@@ -112,6 +114,7 @@ void Analyzer::PlotHistogram()
 
     /******* PANEL 3 (dolje lijevo): LepPhi *******/
     c->cd(3);
+    c->SetLeftMargin(0.15);
     h_LepPhi[2]->GetXaxis()->SetTitle("Phi");
     h_LepPhi[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPhi[2]->SetLineColor(kBlue+1);
@@ -132,6 +135,7 @@ void Analyzer::PlotHistogram()
 
     /******* PANEL 4 (dolje desno): LepBDT *******/
     c->cd(4);
+    c->SetLeftMargin(0.15);
     h_LepBDT[2]->GetXaxis()->SetTitle("BDT");
     h_LepBDT[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepBDT[2]->SetLineColor(kBlue+1);
@@ -155,11 +159,12 @@ void Analyzer::PlotHistogram()
     c->Print("4l-distribucije.png");
     
     c_H->cd();
+    c->SetLeftMargin(0.15);
     h_Higgs->SetTitle("4 leptons mass");
     h_Higgs->GetXaxis()->SetTitle("m_4l");
     h_Higgs->GetYaxis()->SetTitle("Number of particles");
     h_Higgs->Draw();
-    c_H->Print("Higgs.png");
+    c_H->Print("4l-masa.png");
 
     for(i=0; i<4; i++){
         delete h_LepPt[i];
