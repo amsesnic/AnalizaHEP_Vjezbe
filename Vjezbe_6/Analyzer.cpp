@@ -4,10 +4,11 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TLorentzVector.h>
+#include <TLegend.h>
 
 void Analyzer::PlotHistogram()
 {
-    TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 800, 800);
+    TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1000, 800);
     TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 800, 600);
    
     TH1F *h_Higgs    = new TH1F("h_Higgs", "h_Higgs", 100, 100., 150.);
@@ -22,13 +23,13 @@ void Analyzer::PlotHistogram()
         h_LepPt[i]  = new TH1F(naslov.c_str(),  naslov.c_str(),  100, 0., 100.);
 
         naslov = "h_LepEta"+std::to_string(i);
-        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -10., 10.);
+        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -4., 4.);
 
         naslov = "h_LepPhi"+std::to_string(i);
-        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -10., 10.);
+        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -5., 5.);
 
         naslov = "h_LepBDT"+std::to_string(i);
-        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -10., 10.);
+        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 100, -2., 10.);
     }
     
     /*******   NAPUNI HISTOGRAME U Loop   *******/
@@ -90,10 +91,20 @@ void Analyzer::PlotHistogram()
     h_LepPt[1]->SetLineColor(kGreen+2);
     h_LepPt[1]->SetTitle("");
     h_LepPt[1]->Draw("same");
-   
+
+    //legenda
+    TLegend *leg_Pt = new TLegend(0.7,0.8,1.0,1.0);
+    std::string opis;
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_Pt->AddEntry(h_LepPt[i], opis.c_str(), "l");
+    }
+    leg_Pt->Draw();
+
     /******* PANEL 2 (gore desno): LepEta *******/
     c->cd(2);
     gPad->SetLeftMargin(0.15);
+
     h_LepEta[2]->GetXaxis()->SetTitle("Eta");
     h_LepEta[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepEta[2]->SetLineColor(kBlue+1);
@@ -112,9 +123,18 @@ void Analyzer::PlotHistogram()
     h_LepEta[1]->SetTitle("");
     h_LepEta[1]->Draw("same");
 
+    //legenda
+    TLegend *leg_Eta = new TLegend(0.7,0.8,1.0,1.0);
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_Eta->AddEntry(h_LepEta[i], opis.c_str(), "l");
+    }
+    leg_Eta->Draw();
+
     /******* PANEL 3 (dolje lijevo): LepPhi *******/
     c->cd(3);
     gPad->SetLeftMargin(0.15);
+
     h_LepPhi[2]->GetXaxis()->SetTitle("Phi");
     h_LepPhi[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPhi[2]->SetLineColor(kBlue+1);
@@ -133,9 +153,18 @@ void Analyzer::PlotHistogram()
     h_LepPhi[1]->SetTitle("");
     h_LepPhi[1]->Draw("same");
 
+    //legenda
+    TLegend *leg_Phi = new TLegend(0.7,0.8,1.0,1.0);
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_Phi->AddEntry(h_LepPhi[i], opis.c_str(), "l");
+    }
+    leg_Phi->Draw();
+
     /******* PANEL 4 (dolje desno): LepBDT *******/
     c->cd(4);
     gPad->SetLeftMargin(0.15);
+
     h_LepBDT[2]->GetXaxis()->SetTitle("BDT");
     h_LepBDT[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepBDT[2]->SetLineColor(kBlue+1);
@@ -154,12 +183,21 @@ void Analyzer::PlotHistogram()
     h_LepBDT[1]->SetTitle("");
     h_LepBDT[1]->Draw("same");
 
+    //legenda
+    TLegend *leg_BDT = new TLegend(0.7,0.8,1.0,1.0);
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_BDT->AddEntry(h_LepBDT[i], opis.c_str(), "l");
+    }
+    leg_BDT->Draw();
+
     /*LEGENDA, OSI, OSTALE VARIJABLE, LINIJE, BOJE...*/
     
     c->Print("4l-distribucije.png");
     
     c_H->cd();
     gPad->SetLeftMargin(0.15);
+
     h_Higgs->SetTitle("4 leptons mass");
     h_Higgs->GetXaxis()->SetTitle("m_4l");
     h_Higgs->GetYaxis()->SetTitle("Number of particles");
@@ -176,7 +214,7 @@ void Analyzer::PlotHistogram()
     delete c;
 }
 
-void Analyzer::Loop(TH1F *h1, TH1F *h2, TH1F *h3, TH1F *h4, TH1F *h_H)
+void Analyzer::Loop()
 {
 //   In a ROOT session, you can do:
 //      root> .L Analyzer.C
