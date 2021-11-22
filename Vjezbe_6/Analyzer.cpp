@@ -77,22 +77,22 @@ void Analyzer::PlotHistogram()
     h_LepPt[2]->GetXaxis()->SetTitle("Pt (GeV/c)");
     h_LepPt[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPt[2]->SetLineColor(kBlue+1);
-    h_LepPt[2]->SetLineWidth(4);
+    h_LepPt[2]->SetLineWidth(3);
     h_LepPt[2]->SetTitle("Lepton transverse momentum");
     h_LepPt[2]->Draw();
 
     h_LepPt[3]->SetLineColor(kMagenta+2);
-    h_LepPt[3]->SetLineWidth(4);
+    h_LepPt[3]->SetLineWidth(3);
     h_LepPt[3]->SetTitle("");
     h_LepPt[3]->Draw("same");
 
     h_LepPt[0]->SetLineColor(kRed+1);
-    h_LepPt[0]->SetLineWidth(4);
+    h_LepPt[0]->SetLineWidth(3);
     h_LepPt[0]->SetTitle("");
     h_LepPt[0]->Draw("same");
     
     h_LepPt[1]->SetLineColor(kGreen+2);
-    h_LepPt[1]->SetLineWidth(4);
+    h_LepPt[1]->SetLineWidth(3);
     h_LepPt[1]->SetTitle("");
     h_LepPt[1]->Draw("same");
 
