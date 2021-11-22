@@ -83,7 +83,7 @@ void Analyzer::PlotHistogram()
 
     h_LepPt[3]->SetLineColor(kMagenta+1);
     h_LepPt[3]->SetLineWidth(2);
-    h_LepPt[3]->SetLineStyle(kDashed);
+    h_LepPt[3]->SetLineStyle(kDotted);
     h_LepPt[3]->SetTitle("");
     h_LepPt[3]->Draw("same");
 
