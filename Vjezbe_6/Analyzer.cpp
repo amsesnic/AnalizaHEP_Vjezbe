@@ -77,18 +77,22 @@ void Analyzer::PlotHistogram()
     h_LepPt[2]->GetXaxis()->SetTitle("Pt (GeV/c)");
     h_LepPt[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPt[2]->SetLineColor(kBlue+1);
+    h_LepPt[2]->SetLineWidth(4);
     h_LepPt[2]->SetTitle("Lepton transverse momentum");
     h_LepPt[2]->Draw();
 
     h_LepPt[3]->SetLineColor(kMagenta+2);
+    h_LepPt[3]->SetLineWidth(4);
     h_LepPt[3]->SetTitle("");
     h_LepPt[3]->Draw("same");
 
     h_LepPt[0]->SetLineColor(kRed+1);
+    h_LepPt[0]->SetLineWidth(4);
     h_LepPt[0]->SetTitle("");
     h_LepPt[0]->Draw("same");
     
     h_LepPt[1]->SetLineColor(kGreen+2);
+    h_LepPt[1]->SetLineWidth(4);
     h_LepPt[1]->SetTitle("");
     h_LepPt[1]->Draw("same");
 
@@ -184,7 +188,7 @@ void Analyzer::PlotHistogram()
     h_LepBDT[1]->Draw("same");  
 
     //legenda
-    TLegend *leg_BDT = new TLegend(0.6,0.7,0.9,0.9);
+    TLegend *leg_BDT = new TLegend(0.65,0.75,0.9,0.9);
     for(i=0; i<4; i++){
         opis = "lepton " + std::to_string(i+1);
         leg_BDT->AddEntry(h_LepBDT[i], opis.c_str(), "l");
