@@ -77,24 +77,18 @@ void Analyzer::PlotHistogram()
     h_LepPt[2]->GetXaxis()->SetTitle("Pt (GeV/c)");
     h_LepPt[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPt[2]->SetLineColor(kAzure+1);
-    h_LepPt[2]->SetLineWidth(2);
     h_LepPt[2]->SetTitle("Lepton transverse momentum");
     h_LepPt[2]->Draw();
 
     h_LepPt[3]->SetLineColor(kMagenta+1);
-    h_LepPt[3]->SetLineWidth(2);
-    h_LepPt[3]->SetLineStyle(kDotted);
     h_LepPt[3]->SetTitle("");
     h_LepPt[3]->Draw("same");
 
     h_LepPt[0]->SetLineColor(kRed+1);
-    h_LepPt[0]->SetLineWidth(2);
     h_LepPt[0]->SetTitle("");
     h_LepPt[0]->Draw("same");
     
     h_LepPt[1]->SetLineColor(kGreen+2);
-    h_LepPt[1]->SetLineWidth(2);
-    h_LepPt[1]->SetLineStyle(kDashed);
     h_LepPt[1]->SetTitle("");
     h_LepPt[1]->Draw("same");
 
@@ -113,11 +107,11 @@ void Analyzer::PlotHistogram()
 
     h_LepEta[2]->GetXaxis()->SetTitle("Eta");
     h_LepEta[2]->GetYaxis()->SetTitle("Number of particles");
-    h_LepEta[2]->SetLineColor(kBlue+1);
+    h_LepEta[2]->SetLineColor(kAzure+1);
     h_LepEta[2]->SetTitle("Pseudorapidity");
     h_LepEta[2]->Draw();
 
-    h_LepEta[3]->SetLineColor(kMagenta+2);
+    h_LepEta[3]->SetLineColor(kMagenta+1);
     h_LepEta[3]->SetTitle("");
     h_LepEta[3]->Draw("same");
 
@@ -143,11 +137,11 @@ void Analyzer::PlotHistogram()
 
     h_LepPhi[2]->GetXaxis()->SetTitle("Phi");
     h_LepPhi[2]->GetYaxis()->SetTitle("Number of particles");
-    h_LepPhi[2]->SetLineColor(kBlue+1);
+    h_LepPhi[2]->SetLineColor(kAzure+1);
     h_LepPhi[2]->SetTitle("Azimuthal angle");
     h_LepPhi[2]->Draw();
 
-    h_LepPhi[3]->SetLineColor(kMagenta+2);
+    h_LepPhi[3]->SetLineColor(kMagenta+1);
     h_LepPhi[3]->SetTitle("");
     h_LepPhi[3]->Draw("same");
 
@@ -177,11 +171,11 @@ void Analyzer::PlotHistogram()
     h_LepBDT[0]->SetTitle("BDT");
     h_LepBDT[0]->Draw();
 
-    h_LepBDT[2]->SetLineColor(kBlue+1);
+    h_LepBDT[2]->SetLineColor(kAzure+1);
     h_LepBDT[2]->SetTitle("");
     h_LepBDT[2]->Draw("same");
 
-    h_LepBDT[3]->SetLineColor(kMagenta+2);
+    h_LepBDT[3]->SetLineColor(kMagenta+1);
     h_LepBDT[3]->SetTitle("");
     h_LepBDT[3]->Draw("same");
 
