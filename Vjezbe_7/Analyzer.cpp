@@ -227,6 +227,8 @@ void Analyzer::PlotHistogram(TString dir_name)
         h_m4l_higgs->SetTitle("4 leptons mass");
         h_m4l_higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");
         h_m4l_higgs->GetYaxis()->SetTitle("Number of events");
+        h_m4l_higgs->SetLineColor(kPink-6);
+        h_m4l_higgs->SetFillColor(kPink+2);
         h_m4l_higgs->Draw("hist");
         c_H->Print("4l-masa-"+dir_name+".png");
     }
@@ -234,6 +236,8 @@ void Analyzer::PlotHistogram(TString dir_name)
         h_m4l_pozadina->SetTitle("4 leptons mass");
         h_m4l_pozadina->GetXaxis()->SetTitle("m_{4l} (GeV)");
         h_m4l_pozadina->GetYaxis()->SetTitle("Number of events");
+        h_m4l_pozadina->SetLineColor(kBlue+2);
+        h_m4l_pozadina->SetFillColor(kAzure-4);
         h_m4l_pozadina->Draw("hist");
         c_H->Print("4l-masa-"+dir_name+".png");
     }
