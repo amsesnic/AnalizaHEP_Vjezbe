@@ -34,7 +34,7 @@ void Analyzer::PlotHistogram(TString dir_name)
         h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 48, -2., 10.);
     }
     
-    /*******   NAPUNI HISTOGRAME U Loop   *******/
+    /*******   NAPUNI HISTOGRAME U Loop   ********************/
     //Kod kopiran iz Loop() metode
     if (fChain == 0) return;
 
@@ -52,8 +52,10 @@ void Analyzer::PlotHistogram(TString dir_name)
         cout << "L = " << L << " " << "xsec = " << xsec << " " << "w_event = " << overallEventWeight << endl;
         //nema smisla gledat xsec i overall... ako nismo u petlji po dogadajima
         //te varijable su "leafs"
-
     }
+   
+    // Kinematic discriminant
+    double Dkin, constant = 70.;
 
     Long64_t nentries = fChain->GetEntriesFast();
 
@@ -81,12 +83,21 @@ void Analyzer::PlotHistogram(TString dir_name)
        p_Z2 = p_Leptons[2] + p_Leptons[3];
        p_H4L = p_Z1 + p_Z2;
       
-       //h_Higgs ->Fill( p_H4L.M(), w );
-       if(dir_name == "ggH125")    
+       //Kinematic discriminant for current event
+       Dkin = 1.0 + constant * p_QQB_BKG_MCFM / p_GG_SIG_ghg2_1_ghz1_1_JHUGen;
+       Dkin = 1.0/Dkin;
+
+       //Fill public histos
+       if(dir_name == "ggH125"){    
            h_m4l_higgs->Fill( p_H4L.M(), w);
-       else if(dir_name == "qqZZ")
+           h_Dkin_sig->Fill(Dkin, w);
+       }
+       else if(dir_name == "qqZZ"){
            h_m4l_pozadina->Fill( p_H4L.M(), w);
+           h_Dkin_bkg->Fill(Dkin, w);  
+       }
        else {cout << "Krivo ime direktorija" << dir_name << "\n"; return;}
+
     }
     /*****************************************/
 
@@ -303,3 +314,49 @@ Double_t Analyzer::ReadHistogramFromFile(TString dir_name)
     return h->GetBinContent(40);
 }
 
+void Analyzer::PlotPublicHistograms()
+{
+    /********* Masa 4 leptona: Higg + pozadina *********************/
+    TCanvas *c1 = new TCanvas("c1", "higgs i pozadina",0,0, 800, 600);
+    THStack *hstack = new THStack("hstack", "Four lepton mass");
+    TLegend *leg  = new TLegend(0.7, 0.8, 0.9, 0.9); //koordinate dvaju vrhova
+
+    hstack->Add(this->h_m4l_pozadina); //prvo dodaj pozadinu
+    hstack->Add(this->h_m4l_higgs);    //onda dodaj higgsa da se zbroji s pozad$
+
+    hstack->Draw("hist");
+    hstack->GetXaxis()->SetTitle("m_{4l} (GeV)");      //OVO NAKON Draw()!!!
+    hstack->GetYaxis()->SetTitle("Number of events / 2 GeV");
+
+    leg->AddEntry(h_m4l_higgs, "gg->H", "fl");
+    leg->AddEntry(h_m4l_pozadina, "qq->ZZ", "fl");
+    leg->Draw();
+
+    c1->SaveAs("4l-masa-higg+pozadina.png");
+
+
+    /********* Kinematicka diskriminatna **************************/
+    TCanvas *c2 = new TCanvas("c2", "kinematicka diskriminanta",0,0, 800, 600);
+    TLegend *leg2 = new TLegend(0.7, 0.8, 0.9, 0.9);
+
+    h_Dkin_sig->SetTitle("Kinematic discriminant");
+    h_Dkin_sig->GetXaxis()->SetTitle("D^{\text{kin}}_{\text{bkg}}");
+    h_Dkin_sig->GetYaxis()->SetTitle("Probability");
+    h_Dkin_sig->SetLineColor(kRed+2);
+    h_Dkin_sig->Draw("hist");
+
+    h_Dkin_bkg->SetLineColor(kBlue-3);
+    h_Dkin_bkg->Draw("hist same");
+
+    leg2->AddEntry(h_Dkin_sig, "signal", "l");
+    leg2->AddEntry(h_Dkin_bkg, "background", "l");
+    leg->Draw();
+
+    c2->SaveAs("KinDiscriminants.png");
+
+    delete c1;
+    delete c2;
+    delete hstack;
+    delete leg;
+    delete leg2;    
+}
