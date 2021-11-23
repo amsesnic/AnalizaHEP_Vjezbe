@@ -342,6 +342,7 @@ void Analyzer::PlotPublicHistograms()
     h_Dkin_sig->SetTitle("Kinematic discriminant");
     h_Dkin_sig->GetXaxis()->SetTitle("D^{\text{kin}}_{\text{bkg}}");
     h_Dkin_sig->GetYaxis()->SetTitle("Probability");
+    h_Dkin_sig->GetYaxis()->SetRangeUser(0.,50.);
     h_Dkin_sig->SetLineColor(kRed+2);
     h_Dkin_sig->Draw("hist");
 
@@ -350,7 +351,7 @@ void Analyzer::PlotPublicHistograms()
 
     leg2->AddEntry(h_Dkin_sig, "signal", "l");
     leg2->AddEntry(h_Dkin_bkg, "background", "l");
-    leg->Draw();
+    leg2->Draw();
 
     c2->SaveAs("KinDiscriminants.png");
 
