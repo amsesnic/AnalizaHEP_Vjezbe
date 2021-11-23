@@ -12,7 +12,13 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TH2.h>
+#include <THStack.h>
 #include <TString.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TLorentzVector.h>
+#include <TLegend.h>
+#include <iostream>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>

@@ -1,5 +1,11 @@
 #define Analyzer_cxx
 #include <Analyzer.h>
+#include <TH2.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TLorentzVector.h>
+#include <TLegend.h>
+#include <iostream>
 
 void Analyzer::PlotHistogram(TString dir_name)
 {
@@ -12,6 +18,7 @@ void Analyzer::PlotHistogram(TString dir_name)
 
     TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1000, 800);
     TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 800, 600);
+    //THStack *hstack = new THStack("hstack", ""); OVO NE IDE OVDJE NEGO
    
     //TH1F *h_Higgs    = new TH1F("h_Higgs", "h_Higgs", 25, 90., 140.);
     TH1F *h_LepPt[4];
@@ -236,7 +243,9 @@ void Analyzer::PlotHistogram(TString dir_name)
         c_H->Print("4l-masa-"+dir_name+".png");
     }
     else {cout << "Krivo ime direktorija" << dir_name << endl; return;}
-
+    
+    hstack->Add(h_m4l_higgs);
+    hstack->Add(h_m4l_pozadina);
 
     for(i=0; i<4; i++){
         delete h_LepPt[i];
