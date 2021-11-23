@@ -347,11 +347,13 @@ void Analyzer::PlotPublicHistograms()
     h_Dkin_bkg->GetXaxis()->SetTitle("D^{kin}_{bkg}");
     h_Dkin_bkg->GetYaxis()->SetTitle("Probability");
     h_Dkin_bkg->SetLineColor(kRed+2);
+    h_Dkin_bkg->SetLineWidth(2);
     h_Dkin_bkg->Draw("hist");
 
     scale_factor = 1.0/( h_Dkin_sig->Integral() );
     h_Dkin_sig->Scale(scale_factor);
     h_Dkin_sig->SetLineColor(kBlue-3);
+    h_Dkin_sig->SetLineWidth(2);
     h_Dkin_sig->Draw("hist same");
 
     leg2->AddEntry(h_Dkin_sig, "signal", "l");
