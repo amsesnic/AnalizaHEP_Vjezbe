@@ -340,9 +340,10 @@ void Analyzer::PlotPublicHistograms()
     TLegend *leg2 = new TLegend(0.7, 0.8, 0.9, 0.9);
 
     h_Dkin_sig->SetTitle("Kinematic discriminant");
-    h_Dkin_sig->GetXaxis()->SetTitle("D^{\text{kin}}_{\text{bkg}}");
+    h_Dkin_sig->GetXaxis()->SetTitle("D^{kin}_{bkg}");
     h_Dkin_sig->GetYaxis()->SetTitle("Probability");
-    h_Dkin_sig->GetYaxis()->SetRangeUser(0.,50.);
+    h_Dkin_sig->GetXaxis()->SetRangeUser(-10.,10.);
+    h_Dkin_sig->GetYaxis()->SetRangeUser(0.,150.);
     h_Dkin_sig->SetLineColor(kRed+2);
     h_Dkin_sig->Draw("hist");
 
