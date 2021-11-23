@@ -5,6 +5,7 @@
 #include <TCanvas.h>
 #include <TLorentzVector.h>
 #include <TLegend.h>
+#include <iostream>
 
 void Analyzer::PlotHistogram()
 {
@@ -39,6 +40,12 @@ void Analyzer::PlotHistogram()
     TLorentzVector p_Leptons[4];
     TLorentzVector p_Z1, p_Z2, p_H4L;
 
+    // Weighted distributions
+    Double_t w, sum_w, L=137.;
+    sum_w = ReadHistogramFromFile();
+    if(sum_w==0) cout << "sum_w=0!" << endl;
+    else w = (L*xsec*overallEventWeight)/sum_w;
+
     Long64_t nentries = fChain->GetEntriesFast();
 
     Long64_t nbytes = 0, nb = 0;
@@ -49,10 +56,10 @@ void Analyzer::PlotHistogram()
        // if (Cut(ientry) < 0) continue;
        
        for(i=0; i<4; i++){
-           h_LepPt[i] ->Fill(LepPt->at(i)); //ovako se pristupa elementu vectora s pokazivacem na taj vector
-           h_LepEta[i]->Fill(LepEta->at(i));
-           h_LepPhi[i]->Fill(LepPhi->at(i));
-           h_LepBDT[i]->Fill(LepBDT->at(i));
+           h_LepPt[i] ->Fill( w*(LepPt->at(i)) ); //ovako se pristupa elementu vectora s pokazivacem na taj vector
+           h_LepEta[i]->Fill( w*(LepEta->at(i)) );
+           h_LepPhi[i]->Fill( w*(LepPhi->at(i)) );
+           h_LepBDT[i]->Fill( w*(LepBDT->at(i)) );
        }
 
        //4-momentum calculation
@@ -62,7 +69,7 @@ void Analyzer::PlotHistogram()
        p_Z1 = p_Leptons[0] + p_Leptons[1];
        p_Z2 = p_Leptons[2] + p_Leptons[3];
        p_H4L = p_Z1 + p_Z2;
-       h_Higgs ->Fill( p_H4L.M() );
+       h_Higgs ->Fill( p_H4L.M()*w );
     }
     /*****************************************/
 
@@ -193,7 +200,7 @@ void Analyzer::PlotHistogram()
 
     /*LEGENDA, OSI, OSTALE VARIJABLE, LINIJE, BOJE...*/
     
-    c->Print("4l-distribucije.png");
+    c->Print("4l-distribucije-weighted.png");
     
     c_H->cd();
     gPad->SetLeftMargin(0.15);
@@ -202,7 +209,7 @@ void Analyzer::PlotHistogram()
     h_Higgs->GetXaxis()->SetTitle("m_4l (GeV)");
     h_Higgs->GetYaxis()->SetTitle("Number of particles");
     h_Higgs->Draw();
-    c_H->Print("4l-masa.png");
+    c_H->Print("4l-masa-weighted.png");
 
     for(i=0; i<4; i++){
         delete h_LepPt[i];
@@ -253,4 +260,12 @@ void Analyzer::Loop()
    }
 }
 
+Double_t Analyzer::ReadHistogramFromFile()
+{
+    TFile *f = TFile::Open("/home/public/data/ggH125/ZZ4lAnalysis.root");
+    TDirectory * dir = (TDirectory*)f->Get("/home/public/data/ggH125/ZZ4lAnalysis.root:/ZZTree");
+    TH1F *h = new TH1F();
+    dir->GetObject("Counters", h);
+    return h->GetBinContent(40);
+}
 

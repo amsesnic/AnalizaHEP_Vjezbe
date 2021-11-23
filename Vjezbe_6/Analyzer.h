@@ -12,6 +12,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TH2.h>
+#include <TString.h>
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
@@ -1438,6 +1439,7 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
            void     PlotHistogram();
+           Double_t  ReadHistogramFromFile();
 };
 
 #endif
