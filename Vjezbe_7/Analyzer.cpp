@@ -339,6 +339,10 @@ void Analyzer::PlotPublicHistograms()
     TCanvas *c2 = new TCanvas("c2", "kinematicka diskriminanta",0,0, 800, 600);
     TLegend *leg2 = new TLegend(0.7, 0.8, 0.9, 0.9);
 
+    Double_t scale_factor;
+
+    scale_factor = 1.0/( h_Dkin_sig->Integral("width") );
+    h_Dkin_sig->Scale(scale_factor);
     h_Dkin_sig->SetTitle("Kinematic discriminant");
     h_Dkin_sig->GetXaxis()->SetTitle("D^{kin}_{bkg}");
     h_Dkin_sig->GetYaxis()->SetTitle("Probability");
@@ -347,6 +351,8 @@ void Analyzer::PlotPublicHistograms()
     h_Dkin_sig->SetLineColor(kRed+2);
     h_Dkin_sig->Draw("hist");
 
+    scale_factor = 1.0/( h_Dkin_bkg->Integral("width") );
+    h_Dkin_bkg->Scale(scale_factor);
     h_Dkin_bkg->SetLineColor(kBlue-3);
     h_Dkin_bkg->Draw("hist same");
 
