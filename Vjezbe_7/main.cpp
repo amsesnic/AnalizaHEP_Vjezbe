@@ -12,9 +12,10 @@ int main(){
     
     hstack->Add(a->h_m4l_pozadina); //prvo dodaj pozadinu
     hstack->Add(a->h_m4l_higgs);    //onda dodaj higgsa da se zbroji s pozadinom
-    //hstack->GetXaxis()->SetTitle("m_{4l} (GeV)");
-    //hstack->GetYaxis()->SetTitle("Number of events / 2 GeV");
-    hstack->Draw("histo");
+
+    hstack->Draw("histo");   
+    hstack->GetXaxis()->SetTitle("m_{4l} (GeV)");      //OVO NAKON Draw()!!!
+    hstack->GetYaxis()->SetTitle("Number of events / 2 GeV");
     
     leg->AddEntry(a->h_m4l_higgs, "gg->H", "fl");
     leg->AddEntry(a->h_m4l_pozadina, "qq->ZZ", "fl");
