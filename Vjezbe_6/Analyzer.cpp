@@ -44,7 +44,12 @@ void Analyzer::PlotHistogram()
     Double_t w, sum_w, L=137.;
     sum_w = ReadHistogramFromFile();
     if(sum_w==0) cout << "sum_w=0!" << endl;
-    else w = (L*xsec*overallEventWeight)/sum_w;
+    else {
+        cout << "sum_w = " << sum_w << "\n";
+        w = (L*xsec*1000.*overallEventWeight)/sum_w; //faktor 1000 zbog jedinica
+        cout << "w = " << w << endl;
+        cout << "L = " << L << " " << "xsec = " << xsec << " " << "w_event = " << overallEventWeight << endl;
+    }
 
     Long64_t nentries = fChain->GetEntriesFast();
 
@@ -56,10 +61,10 @@ void Analyzer::PlotHistogram()
        // if (Cut(ientry) < 0) continue;
        
        for(i=0; i<4; i++){
-           h_LepPt[i] ->Fill( w*(LepPt->at(i)) ); //ovako se pristupa elementu vectora s pokazivacem na taj vector
-           h_LepEta[i]->Fill( w*(LepEta->at(i)) );
-           h_LepPhi[i]->Fill( w*(LepPhi->at(i)) );
-           h_LepBDT[i]->Fill( w*(LepBDT->at(i)) );
+           h_LepPt[i] ->Fill(LepPt->at(i), w); //ovako se pristupa elementu vectora s pokazivacem na taj vector
+           h_LepEta[i]->Fill(LepEta->at(i), w);
+           h_LepPhi[i]->Fill(LepPhi->at(i), w);
+           h_LepBDT[i]->Fill(LepBDT->at(i), w );
        }
 
        //4-momentum calculation
@@ -69,7 +74,7 @@ void Analyzer::PlotHistogram()
        p_Z1 = p_Leptons[0] + p_Leptons[1];
        p_Z2 = p_Leptons[2] + p_Leptons[3];
        p_H4L = p_Z1 + p_Z2;
-       h_Higgs ->Fill( p_H4L.M()*w );
+       h_Higgs ->Fill( p_H4L.M(), w );
     }
     /*****************************************/
 
