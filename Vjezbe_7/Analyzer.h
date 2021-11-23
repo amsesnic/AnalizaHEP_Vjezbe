@@ -1478,8 +1478,8 @@ Analyzer::Analyzer() : fChain(0)
    /* INICIJALIZIRAJ HISTOGRAME */
    h_m4l_pozadina = new TH1F("h_m4l_pozadina", "4l from background", 50, 70., 170.);
    h_m4l_higgs    = new TH1F("h_m4l_higgs", "4l from Higgs", 50, 70., 170.);
-   h_Dkin_sig     = new TH1F("h_Dkin_sig", "kin discriminant for signal events", 20, 0., 1.);
-   h_Dkin_bkg     = new TH1F("h_Dkin_bkg", "kin discriminant for background  events", 20, 0., 1.);
+   h_Dkin_sig     = new TH1F("h_Dkin_sig", "kin discriminant for signal events", 50, 0., 1.);
+   h_Dkin_bkg     = new TH1F("h_Dkin_bkg", "kin discriminant for background  events", 50, 0., 1.);
 
 }
 
