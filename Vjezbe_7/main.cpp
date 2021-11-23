@@ -12,7 +12,7 @@ int main(){
     
     hstack->Add(a->h_m4l_higgs);
     hstack->Add(a->h_m4l_pozadina);
-    hstack->Draw("hist");
+    hstack->Draw("nostack");
     
     leg->AddEntry(a->h_m4l_higgs, "gg->H", "fl");
     leg->AddEntry(a->h_m4l_pozadina, "qq->ZZ", "fl");
