@@ -92,7 +92,7 @@ void Analyzer::PlotHistogram()
     gPad->SetLeftMargin(0.15);
 
     h_LepPt[2]->GetXaxis()->SetTitle("P_{t} (GeV/c)");
-    h_LepPt[2]->GetYaxis()->SetTitle("Number of particles");
+    h_LepPt[2]->GetYaxis()->SetTitle("Number of events");
     h_LepPt[2]->SetLineColor(kAzure+1);
     h_LepPt[2]->SetTitle("Lepton transverse momentum");
     h_LepPt[2]->Draw("hist");
@@ -123,7 +123,7 @@ void Analyzer::PlotHistogram()
     gPad->SetLeftMargin(0.15);
 
     h_LepEta[2]->GetXaxis()->SetTitle("#eta");
-    h_LepEta[2]->GetYaxis()->SetTitle("Number of particles");
+    h_LepEta[2]->GetYaxis()->SetTitle("Number of events");
     h_LepEta[2]->SetLineColor(kAzure+1);
     h_LepEta[2]->SetTitle("Pseudorapidity");
     h_LepEta[2]->Draw("hist");
@@ -153,7 +153,7 @@ void Analyzer::PlotHistogram()
     gPad->SetLeftMargin(0.15);
 
     h_LepPhi[2]->GetXaxis()->SetTitle("#phi");
-    h_LepPhi[2]->GetYaxis()->SetTitle("Number of particles");
+    h_LepPhi[2]->GetYaxis()->SetTitle("Number of events");
     h_LepPhi[2]->SetLineColor(kAzure+1);
     h_LepPhi[2]->SetTitle("Azimuthal angle");
     h_LepPhi[2]->Draw("hist");
@@ -183,7 +183,7 @@ void Analyzer::PlotHistogram()
     gPad->SetLeftMargin(0.15);
 
     h_LepBDT[0]->GetXaxis()->SetTitle("BDT");
-    h_LepBDT[0]->GetYaxis()->SetTitle("Number of particles");
+    h_LepBDT[0]->GetYaxis()->SetTitle("Number of events");
     h_LepBDT[0]->SetLineColor(kRed+1);
     h_LepBDT[0]->SetTitle("BDT");
     h_LepBDT[0]->Draw("hist");
@@ -217,7 +217,7 @@ void Analyzer::PlotHistogram()
 
     h_Higgs->SetTitle("4 leptons mass");
     h_Higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");
-    h_Higgs->GetYaxis()->SetTitle("Number of particles");
+    h_Higgs->GetYaxis()->SetTitle("Number of events");
     h_Higgs->Draw("hist");
     c_H->Print("4l-masa-weighted.png");
 
