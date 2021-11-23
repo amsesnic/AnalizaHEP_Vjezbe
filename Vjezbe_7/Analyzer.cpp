@@ -43,7 +43,7 @@ void Analyzer::PlotHistogram(TString dir_name)
 
     // Weighted distributions
     double  w, sum_w, L=137.;
-    sum_w = ReadHistogramFromFile();
+    sum_w = ReadHistogramFromFile(dir_name);
     if(sum_w==0) cout << "sum_w=0!" << endl;
     else {
         cout << "sum_w = " << sum_w << "\n";
@@ -294,10 +294,10 @@ void Analyzer::Loop()
    }
 }
 
-Double_t Analyzer::ReadHistogramFromFile()
+Double_t Analyzer::ReadHistogramFromFile(TString dir_name)
 {
-    TFile *f = TFile::Open("/home/public/data/ggH125/ZZ4lAnalysis.root");
-    TDirectory * dir = (TDirectory*)f->Get("/home/public/data/ggH125/ZZ4lAnalysis.root:/ZZTree");
+    TFile *f = TFile::Open("/home/public/data/"+dir_name+"/ZZ4lAnalysis.root");
+    TDirectory * dir = (TDirectory*)f->Get("/home/public/data/"+dir_name+"/ZZ4lAnalysis.root:/ZZTree");
     TH1F *h = new TH1F();
     dir->GetObject("Counters", h);
     return h->GetBinContent(40);

@@ -1445,7 +1445,7 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
            void     PlotHistogram(TString dir_name);
-           Double_t  ReadHistogramFromFile();
+           Double_t  ReadHistogramFromFile(TString dir_name);
 
    /* HISTOGRAMI POZADINA I HIGGS */
    TH1F *h_m4l_pozadina;
