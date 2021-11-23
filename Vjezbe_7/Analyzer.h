@@ -1429,19 +1429,20 @@ public :
    TBranch        *b_p_Gen_GG_SIG_gXg5_1_gXz9_1_JHUGen;   //!
    TBranch        *b_p_Gen_GG_SIG_gXg5_1_gXz10_1_JHUGen;   //!
 
-   Analyzer(TTree *tree=0);
+   Analyzer();
    virtual ~Analyzer();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(TH1F *h1, TH1F *h2, TH1F *h3, TH1F *h4, TH1F *h_H);
+   virtual void     Loop();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-           void     PlotHistogram(TString file_name);
+           void     PlotHistogram(TString dir_name);
+           Double_t  ReadHistogramFromFile();
 
-   /* HISTOGRAMI POZADINA I HIGGS*/
-   TH1F *h_m4l_pozadina; 
+   /* HISTOGRAMI POZADINA I HIGGS */
+   TH1F *h_m4l_pozadina;
    TH1F *h_m4l_higgs;
 };
 
@@ -1465,9 +1466,9 @@ Analyzer::Analyzer() : fChain(0)
    Init(tree);
    */
 
-   /* INICIJALIZIRATI 2 HISTOGRAMA */
-   h_m4l_pozadina     = new TH1F("h_pozadina", "h_pozadina", 50, 70., 170.); //ne znam granice
-   h_m4l_higgs        = new TH1F("h_higgs", "h_higgs", 50, 70., 170.);
+   /* INICIJALIZIRAJ 2 HISTOGRAMA */
+   h_m4l_pozadina = new TH1F("h_m4l_pozadina", "4l from background", 50, 70., 170.);
+   h_m4l_higgs    = new TH1F("h_m4l_higgs", "4l from Higgs", 50, 70., 170.);
 }
 
 Analyzer::~Analyzer()

@@ -3,10 +3,7 @@
 int main(){
 
     Analyzer *a = new Analyzer();
-
-    TString dir_name = "qqZZ";
-
-    a->PlotHistogram(dir_name);
-
+    a->PlotHistogram("ggH125");
+    a->PlotHistogram("qqZZ");
     return 0;
 }

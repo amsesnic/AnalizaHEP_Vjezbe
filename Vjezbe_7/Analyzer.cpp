@@ -1,110 +1,261 @@
 #define Analyzer_cxx
-#include "Analyzer.h"
+#include <Analyzer.h>
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TLorentzVector.h>
+#include <TLegend.h>
+#include <iostream>
 
-
-void Analyzer::PlotHistogram(TString file_name)
+void Analyzer::PlotHistogram(TString dir_name)
 {
-    //stvori file i ucitaj stablo iz datoteke koju ti recem
+    //stvori file i ucitaj stablo iz mape koju ti dam
     TTree *tree = new TTree();
-    TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/home/public/data/"+file_name+"/ZZ4lAnalysis.root");
-    if (!f || !f->IsOpen()) {
-       f = new TFile("/home/public/data/"+file_name+"/ZZ4lAnalysis.root");
-    }
-    TDirectory * dir = (TDirectory*)f->Get("/home/public/data/"+file_name+"/ZZ4lAnalysis.root:/ZZTree");
-    dir->GetObject("candTree",tree); //ovdje ucitava tree iz root file-a
+    TFile *f = TFile::Open("/home/public/data/" + dir_name + "/ZZ4lAnalysis.root");
+    TDirectory * dir = (TDirectory*)f->Get("/home/public/data/" + dir_name + "/ZZ4lAnalysis.root:/ZZTree");
+    dir->GetObject("candTree",tree);
     this->Init(tree);
+
+    TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1000, 800);
+    TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 800, 600);
+   
+    //TH1F *h_Higgs    = new TH1F("h_Higgs", "h_Higgs", 25, 90., 140.);
+    TH1F *h_LepPt[4];
+    TH1F *h_LepEta[4];
+    TH1F *h_LepPhi[4];
+    TH1F *h_LepBDT[4];
+    int i;
+    std::string naslov;
+    for(i=0; i<4; i++){
+        naslov = "h_LepPt"+std::to_string(i);
+        h_LepPt[i]  = new TH1F(naslov.c_str(),  naslov.c_str(),  50, 0., 100.);
+
+        naslov = "h_LepEta"+std::to_string(i);
+        h_LepEta[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 40, -4., 4.);
+
+        naslov = "h_LepPhi"+std::to_string(i);
+        h_LepPhi[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 50, -5., 5.);
+
+        naslov = "h_LepBDT"+std::to_string(i);
+        h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 48, -2., 10.);
+    }
     
-    TCanvas *c   = new TCanvas("c", "Histogrami", 0, 0, 1000, 1000);
-    TCanvas *c_H = new TCanvas("c_H", "Histogram_H", 0, 0, 1000, 1000);
-    TH1F *h1     = new TH1F("h11", "histo11", 100, 0., 100.); //ne znam granice
-    TH1F *h2     = new TH1F("h12", "histo12", 100, 0., 100.); 
-    TH1F *h3     = new TH1F("h13", "histo13", 100, 0., 100.); 
-    TH1F *h4     = new TH1F("h14", "histo14", 100, 0., 100.); 
-    TH1F *h_H    = new TH1F("h_H", "histo_H", 100, 100., 150.); 
-    
-    /*****************************************************/
-    //napuni histograme u Loop
-    //this->Loop(h1,h2,h3,h4,h_H); //BOLJE KOPIRAT KOD IZ LOOP TU!!!
+    /*******   NAPUNI HISTOGRAME U Loop   *******/
+    //Kod kopiran iz Loop() metode
     if (fChain == 0) return;
 
-   TLorentzVector p_L1, p_L2, p_L3, p_L4, p_Z1, p_Z2, p_H4L;
+    TLorentzVector p_Leptons[4];
+    TLorentzVector p_Z1, p_Z2, p_H4L;
 
-   Long64_t nentries = fChain->GetEntriesFast();
+    // Weighted distributions
+    double  w, sum_w, L=137.;
+    sum_w = ReadHistogramFromFile();
+    if(sum_w==0) cout << "sum_w=0!" << endl;
+    else {
+        cout << "sum_w = " << sum_w << "\n";
+        w = (L*xsec*1000.*overallEventWeight)/sum_w; //faktor 1000 zbog jedinica
+        cout << "w = " << w << endl;
+        cout << "L = " << L << " " << "xsec = " << xsec << " " << "w_event = " << overallEventWeight << endl;
+        //nema smisla gledat xsec i overall... ako nismo u petlji po dogadajima
+        //te varijable su "leafs"
 
-   Long64_t nbytes = 0, nb = 0;
-   for (Long64_t jentry=0; jentry<nentries;jentry++) {
-      Long64_t ientry = LoadTree(jentry);
-      if (ientry < 0) break;
-      nb = fChain->GetEntry(jentry);   nbytes += nb;
-      // if (Cut(ientry) < 0) continue;
+    }
 
-      h1->Fill(LepPt->at(0)); //ovako se pristupa elementu vectora s pokazivacem na taj vector
-      h2->Fill(LepPt->at(1));
-      h3->Fill(LepPt->at(2));
-      h4->Fill(LepPt->at(3));
+    Long64_t nentries = fChain->GetEntriesFast();
 
-      //4-momentum calculation
-      p_L1.SetPtEtaPhiM( LepPt->at(0), LepEta->at(0), LepPhi->at(0), 0.); //masa=0
-      p_L2.SetPtEtaPhiM( LepPt->at(1), LepEta->at(1), LepPhi->at(1), 0.);
-      p_L3.SetPtEtaPhiM( LepPt->at(2), LepEta->at(2), LepPhi->at(2), 0.);
-      p_L4.SetPtEtaPhiM( LepPt->at(3), LepEta->at(3), LepPhi->at(3), 0.);
+    Long64_t nbytes = 0, nb = 0;
+    for (Long64_t jentry=0; jentry<nentries;jentry++) {
+       Long64_t ientry = LoadTree(jentry);
+       if (ientry < 0) break;
+       nb = fChain->GetEntry(jentry);   nbytes += nb;
+       // if (Cut(ientry) < 0) continue;
+       
+       //calculate weight for current event
+       w = (L * xsec * 1000. * overallEventWeight)/sum_w;
+       for(i=0; i<4; i++){
+           h_LepPt[i] ->Fill(LepPt->at(i), w); //ovako se pristupa elementu vectora s pokazivacem na taj vector
+           h_LepEta[i]->Fill(LepEta->at(i), w);
+           h_LepPhi[i]->Fill(LepPhi->at(i), w);
+           h_LepBDT[i]->Fill(LepBDT->at(i), w );
+       }
+
+       //4-momentum calculation
+       for(i=0; i<4; i++)
+           p_Leptons[i].SetPtEtaPhiM( LepPt->at(i), LepEta->at(i), LepPhi->at(i), 0.); //masa=0
       
-      p_Z1 = p_L1 + p_L2;
-      p_Z2 = p_L3 + p_L4;
-      p_H4L = p_Z1 + p_Z2;
+       p_Z1 = p_Leptons[0] + p_Leptons[1];
+       p_Z2 = p_Leptons[2] + p_Leptons[3];
+       p_H4L = p_Z1 + p_Z2;
+      
+       //h_Higgs ->Fill( p_H4L.M(), w );
+       if(dir_name == "ggH125")    h_m4l_higgs->Fill( p_H4L.M() );
+       else if(dir_name == "qqZZ") h_m4l_pozadina->Fill( p_H4L.M() );
+       else {cout << "Krivo ime direktorija" << dir_name << "\n"; return;}
+    }
+    /*****************************************/
 
-      //h_H->Fill( p_H4L.M() ); //Ne puni ovaj nego onaj public inicijalizirani
-      if(file_name=="ggH125")    h_m4l_higgs->Fill( p_H4L.M() );
-      else if(file_name=="qqZZ") h_m4l_pozadina->Fill( p_H4L.M() );
-      else std::cout << "Krivo ime\n";
-   }
-   /*****************************************************/
 
-
-    c->SetLeftMargin(0.15);
     c->Divide(2,2);
     gStyle->SetOptStat(0);
 
-    /******* PANEL 1 (gore lijevo): Pt *******/
+    /******* PANEL 1 (gore lijevo): LepPt *******/
     c->cd(1);
-    h3->GetXaxis()->SetTitle("Pt (GeV/c)");
-    h3->GetYaxis()->SetTitle("Number of particles");
-    h3->SetLineColor(kBlue+1);
-    h3->SetTitle("Lepton transverse momentum");
-    h3->Draw();
+    gPad->SetLeftMargin(0.15);
 
-    h4->SetLineColor(kMagenta+2);
-    h4->SetTitle("");
-    h4->Draw("same");
+    h_LepPt[2]->GetXaxis()->SetTitle("P_{t} (GeV/c)");
+    h_LepPt[2]->GetYaxis()->SetTitle("Number of events");
+    h_LepPt[2]->SetLineColor(kAzure+1);
+    h_LepPt[2]->SetTitle("Lepton transverse momentum");
+    h_LepPt[2]->Draw("hist");
 
-    h1->SetLineColor(kRed+1);
-    h1->SetTitle("");
-    h1->Draw("same");
-    
-    h2->SetLineColor(kGreen+2);
-    h2->SetTitle("");
-    h2->Draw("same");
-   
-    
-    /*LEGENDA, OSI, OSTALE VARIJABLE, LINIJE, BOJE...*/
-    
-    c->Print("leptons_"+file_name+".png");    
+    h_LepPt[3]->SetLineColor(kMagenta+1);
+    h_LepPt[3]->SetTitle("");
+    h_LepPt[3]->Draw("hist same");
 
+    h_LepPt[0]->SetLineColor(kRed+1);
+    h_LepPt[0]->SetTitle("");
+    h_LepPt[0]->Draw("hist same");
+    
+    h_LepPt[1]->SetLineColor(kGreen+2);
+    h_LepPt[1]->SetTitle("");
+    h_LepPt[1]->Draw("hist same");
+
+    //legenda
+    TLegend *leg_Pt = new TLegend(0.65,0.75,0.9,0.9);
+    std::string opis;
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_Pt->AddEntry(h_LepPt[i], opis.c_str(), "l");
+    }
+    leg_Pt->Draw();
+
+    /******* PANEL 2 (gore desno): LepEta *******/
+    c->cd(2);
+    gPad->SetLeftMargin(0.15);
+
+    h_LepEta[2]->GetXaxis()->SetTitle("#eta");
+    h_LepEta[2]->GetYaxis()->SetTitle("Number of events");
+    h_LepEta[2]->SetLineColor(kAzure+1);
+    h_LepEta[2]->SetTitle("Pseudorapidity");
+    h_LepEta[2]->Draw("hist");
+
+    h_LepEta[3]->SetLineColor(kMagenta+1);
+    h_LepEta[3]->SetTitle("");
+    h_LepEta[3]->Draw("hist same");
+
+    h_LepEta[0]->SetLineColor(kRed+1);
+    h_LepEta[0]->SetTitle("");
+    h_LepEta[0]->Draw("hist same");
+    
+    h_LepEta[1]->SetLineColor(kGreen+2);
+    h_LepEta[1]->SetTitle("");
+    h_LepEta[1]->Draw("hist same");
+
+    //legenda
+    TLegend *leg_Eta = new TLegend(0.65,0.75,0.9,0.9);
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_Eta->AddEntry(h_LepEta[i], opis.c_str(), "l");
+    }
+    leg_Eta->Draw();
+
+    /******* PANEL 3 (dolje lijevo): LepPhi *******/
+    c->cd(3);
+    gPad->SetLeftMargin(0.15);
+
+    h_LepPhi[2]->GetXaxis()->SetTitle("#phi");
+    h_LepPhi[2]->GetYaxis()->SetTitle("Number of events");
+    h_LepPhi[2]->SetLineColor(kAzure+1);
+    h_LepPhi[2]->SetTitle("Azimuthal angle");
+    h_LepPhi[2]->Draw("hist");
+
+    h_LepPhi[3]->SetLineColor(kMagenta+1);
+    h_LepPhi[3]->SetTitle("");
+    h_LepPhi[3]->Draw("hist same");
+
+    h_LepPhi[0]->SetLineColor(kRed+1);
+    h_LepPhi[0]->SetTitle("");
+    h_LepPhi[0]->Draw("hist same");
+    
+    h_LepPhi[1]->SetLineColor(kGreen+2);
+    h_LepPhi[1]->SetTitle("");
+    h_LepPhi[1]->Draw("hist same");
+
+    //legenda
+    TLegend *leg_Phi = new TLegend(0.65,0.2,0.9,0.35);
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_Phi->AddEntry(h_LepPhi[i], opis.c_str(), "l");
+    }
+    leg_Phi->Draw();
+
+    /******* PANEL 4 (dolje desno): LepBDT *******/
+    c->cd(4);
+    gPad->SetLeftMargin(0.15);
+
+    h_LepBDT[0]->GetXaxis()->SetTitle("BDT");
+    h_LepBDT[0]->GetYaxis()->SetTitle("Number of events");
+    h_LepBDT[0]->SetLineColor(kRed+1);
+    h_LepBDT[0]->SetTitle("BDT");
+    h_LepBDT[0]->Draw("hist");
+
+    h_LepBDT[2]->SetLineColor(kAzure+1);
+    h_LepBDT[2]->SetTitle("");
+    h_LepBDT[2]->Draw("hist same");
+
+    h_LepBDT[3]->SetLineColor(kMagenta+1);
+    h_LepBDT[3]->SetTitle("");
+    h_LepBDT[3]->Draw("hist same");
+
+    h_LepBDT[1]->SetLineColor(kGreen+2);
+    h_LepBDT[1]->SetTitle("");
+    h_LepBDT[1]->Draw("hist same");  
+
+    //legenda
+    TLegend *leg_BDT = new TLegend(0.65,0.75,0.9,0.9);
+    for(i=0; i<4; i++){
+        opis = "lepton " + std::to_string(i+1);
+        leg_BDT->AddEntry(h_LepBDT[i], opis.c_str(), "l");
+    }
+    leg_BDT->Draw();
+
+    
+    c->Print("4l-distribucije-"+dir_name+".png");
+
+
+    /****** MASA 4 LEPTONA = HIGGS ******/    
     c_H->cd();
-    h_H->Draw();
-    c_H->Print("Higgs_"+file_name+".png");
-    delete h1;
-    delete h2;
-    delete h3;
-    delete h4;
+    gPad->SetLeftMargin(0.15);
+
+    if(dir_name == "ggH125"){
+        h_m4l_higgs->SetTitle("4 leptons mass");
+        h_m4l_higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");
+        h_m4l_higgs->GetYaxis()->SetTitle("Number of events");
+        h_m4l_higgs->Draw("hist");
+        c_H->Print("4l-masa-"+dir_name+".png");
+    }
+    else if(dir_name == "qqZZ"){
+        h_m4l_pozadina->SetTitle("4 leptons mass");
+        h_m4l_pozadina->GetXaxis()->SetTitle("m_{4l} (GeV)");
+        h_m4l_pozadina->GetYaxis()->SetTitle("Number of events");
+        h_m4l_pozadina->Draw("hist");
+        c_H->Print("4l-masa-"+dir_name+".png");
+    }
+    else {cout << "Krivo ime direktorija" << dir_name << endl; return;}
+
+
+    for(i=0; i<4; i++){
+        delete h_LepPt[i];
+        delete h_LepEta[i];
+        delete h_LepPhi[i];
+        delete h_LepBDT[i];
+    }
+    //delete h_Higgs;
     delete c;
+    delete c_H;
 }
 
-void Analyzer::Loop(TH1F *h1, TH1F *h2, TH1F *h3, TH1F *h4, TH1F *h_H)
+void Analyzer::Loop()
 {
 //   In a ROOT session, you can do:
 //      root> .L Analyzer.C
@@ -131,8 +282,6 @@ void Analyzer::Loop(TH1F *h1, TH1F *h2, TH1F *h3, TH1F *h4, TH1F *h_H)
 //by  b_branchname->GetEntry(ientry); //read only this branch
    if (fChain == 0) return;
 
-   TLorentzVector p_L1, p_L2, p_L3, p_L4, p_Z1, p_Z2, p_H4L;
-
    Long64_t nentries = fChain->GetEntriesFast();
 
    Long64_t nbytes = 0, nb = 0;
@@ -142,24 +291,15 @@ void Analyzer::Loop(TH1F *h1, TH1F *h2, TH1F *h3, TH1F *h4, TH1F *h_H)
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
 
-      h1->Fill(LepPt->at(0)); //ovako se pristupa elementu vectora s pokazivacem na taj vector
-      h2->Fill(LepPt->at(1));
-      h3->Fill(LepPt->at(2));
-      h4->Fill(LepPt->at(3));
-
-      //4-momentum calculation
-      p_L1.SetPtEtaPhiM( LepPt->at(0), LepEta->at(0), LepPhi->at(0), 0.); //masa=0
-      p_L2.SetPtEtaPhiM( LepPt->at(1), LepEta->at(1), LepPhi->at(1), 0.);
-      p_L3.SetPtEtaPhiM( LepPt->at(2), LepEta->at(2), LepPhi->at(2), 0.);
-      p_L4.SetPtEtaPhiM( LepPt->at(3), LepEta->at(3), LepPhi->at(3), 0.);
-      
-      p_Z1 = p_L1 + p_L2;
-      p_Z2 = p_L3 + p_L4;
-      p_H4L = p_Z1 + p_Z2;
-
-      //h_H->Fill( p_H4L.M() ); //Ne puni ovaj nego onaj public inicijalizirani
-      if() h_m4l_
    }
 }
 
+Double_t Analyzer::ReadHistogramFromFile()
+{
+    TFile *f = TFile::Open("/home/public/data/ggH125/ZZ4lAnalysis.root");
+    TDirectory * dir = (TDirectory*)f->Get("/home/public/data/ggH125/ZZ4lAnalysis.root:/ZZTree");
+    TH1F *h = new TH1F();
+    dir->GetObject("Counters", h);
+    return h->GetBinContent(40);
+}
 
