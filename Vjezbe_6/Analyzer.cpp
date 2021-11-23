@@ -41,7 +41,7 @@ void Analyzer::PlotHistogram()
     TLorentzVector p_Z1, p_Z2, p_H4L;
 
     // Weighted distributions
-    Double_t w, sum_w, L=137.;
+    double  w, sum_w, L=137.;
     sum_w = ReadHistogramFromFile();
     if(sum_w==0) cout << "sum_w=0!" << endl;
     else {
@@ -49,6 +49,9 @@ void Analyzer::PlotHistogram()
         w = (L*xsec*1000.*overallEventWeight)/sum_w; //faktor 1000 zbog jedinica
         cout << "w = " << w << endl;
         cout << "L = " << L << " " << "xsec = " << xsec << " " << "w_event = " << overallEventWeight << endl;
+        //nema smisla gledat xsec i overall... ako nismo u petlji po dogadajima
+        //te varijable su "leafs"
+
     }
 
     Long64_t nentries = fChain->GetEntriesFast();
@@ -60,6 +63,8 @@ void Analyzer::PlotHistogram()
        nb = fChain->GetEntry(jentry);   nbytes += nb;
        // if (Cut(ientry) < 0) continue;
        
+       //calculate weight for current event
+       w = (L * xsec * 1000. * overallEventWeight)/sum_w;
        for(i=0; i<4; i++){
            h_LepPt[i] ->Fill(LepPt->at(i), w); //ovako se pristupa elementu vectora s pokazivacem na taj vector
            h_LepEta[i]->Fill(LepEta->at(i), w);
@@ -86,23 +91,23 @@ void Analyzer::PlotHistogram()
     c->cd(1);
     gPad->SetLeftMargin(0.15);
 
-    h_LepPt[2]->GetXaxis()->SetTitle("Pt (GeV/c)");
+    h_LepPt[2]->GetXaxis()->SetTitle("P_{t} (GeV/c)");
     h_LepPt[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPt[2]->SetLineColor(kAzure+1);
     h_LepPt[2]->SetTitle("Lepton transverse momentum");
-    h_LepPt[2]->Draw();
+    h_LepPt[2]->Draw("hist");
 
     h_LepPt[3]->SetLineColor(kMagenta+1);
     h_LepPt[3]->SetTitle("");
-    h_LepPt[3]->Draw("same");
+    h_LepPt[3]->Draw("hist same");
 
     h_LepPt[0]->SetLineColor(kRed+1);
     h_LepPt[0]->SetTitle("");
-    h_LepPt[0]->Draw("same");
+    h_LepPt[0]->Draw("hist same");
     
     h_LepPt[1]->SetLineColor(kGreen+2);
     h_LepPt[1]->SetTitle("");
-    h_LepPt[1]->Draw("same");
+    h_LepPt[1]->Draw("hist same");
 
     //legenda
     TLegend *leg_Pt = new TLegend(0.65,0.75,0.9,0.9);
@@ -117,23 +122,23 @@ void Analyzer::PlotHistogram()
     c->cd(2);
     gPad->SetLeftMargin(0.15);
 
-    h_LepEta[2]->GetXaxis()->SetTitle("Eta");
+    h_LepEta[2]->GetXaxis()->SetTitle("#eta");
     h_LepEta[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepEta[2]->SetLineColor(kAzure+1);
     h_LepEta[2]->SetTitle("Pseudorapidity");
-    h_LepEta[2]->Draw();
+    h_LepEta[2]->Draw("hist");
 
     h_LepEta[3]->SetLineColor(kMagenta+1);
     h_LepEta[3]->SetTitle("");
-    h_LepEta[3]->Draw("same");
+    h_LepEta[3]->Draw("hist same");
 
     h_LepEta[0]->SetLineColor(kRed+1);
     h_LepEta[0]->SetTitle("");
-    h_LepEta[0]->Draw("same");
+    h_LepEta[0]->Draw("hist same");
     
     h_LepEta[1]->SetLineColor(kGreen+2);
     h_LepEta[1]->SetTitle("");
-    h_LepEta[1]->Draw("same");
+    h_LepEta[1]->Draw("hist same");
 
     //legenda
     TLegend *leg_Eta = new TLegend(0.65,0.75,0.9,0.9);
@@ -147,23 +152,23 @@ void Analyzer::PlotHistogram()
     c->cd(3);
     gPad->SetLeftMargin(0.15);
 
-    h_LepPhi[2]->GetXaxis()->SetTitle("Phi");
+    h_LepPhi[2]->GetXaxis()->SetTitle("#phi");
     h_LepPhi[2]->GetYaxis()->SetTitle("Number of particles");
     h_LepPhi[2]->SetLineColor(kAzure+1);
     h_LepPhi[2]->SetTitle("Azimuthal angle");
-    h_LepPhi[2]->Draw();
+    h_LepPhi[2]->Draw("hist");
 
     h_LepPhi[3]->SetLineColor(kMagenta+1);
     h_LepPhi[3]->SetTitle("");
-    h_LepPhi[3]->Draw("same");
+    h_LepPhi[3]->Draw("hist same");
 
     h_LepPhi[0]->SetLineColor(kRed+1);
     h_LepPhi[0]->SetTitle("");
-    h_LepPhi[0]->Draw("same");
+    h_LepPhi[0]->Draw("hist same");
     
     h_LepPhi[1]->SetLineColor(kGreen+2);
     h_LepPhi[1]->SetTitle("");
-    h_LepPhi[1]->Draw("same");
+    h_LepPhi[1]->Draw("hist same");
 
     //legenda
     TLegend *leg_Phi = new TLegend(0.65,0.2,0.9,0.35);
@@ -181,19 +186,19 @@ void Analyzer::PlotHistogram()
     h_LepBDT[0]->GetYaxis()->SetTitle("Number of particles");
     h_LepBDT[0]->SetLineColor(kRed+1);
     h_LepBDT[0]->SetTitle("BDT");
-    h_LepBDT[0]->Draw();
+    h_LepBDT[0]->Draw("hist");
 
     h_LepBDT[2]->SetLineColor(kAzure+1);
     h_LepBDT[2]->SetTitle("");
-    h_LepBDT[2]->Draw("same");
+    h_LepBDT[2]->Draw("hist same");
 
     h_LepBDT[3]->SetLineColor(kMagenta+1);
     h_LepBDT[3]->SetTitle("");
-    h_LepBDT[3]->Draw("same");
+    h_LepBDT[3]->Draw("hist same");
 
     h_LepBDT[1]->SetLineColor(kGreen+2);
     h_LepBDT[1]->SetTitle("");
-    h_LepBDT[1]->Draw("same");  
+    h_LepBDT[1]->Draw("hist same");  
 
     //legenda
     TLegend *leg_BDT = new TLegend(0.65,0.75,0.9,0.9);
@@ -211,9 +216,9 @@ void Analyzer::PlotHistogram()
     gPad->SetLeftMargin(0.15);
 
     h_Higgs->SetTitle("4 leptons mass");
-    h_Higgs->GetXaxis()->SetTitle("m_4l (GeV)");
+    h_Higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");
     h_Higgs->GetYaxis()->SetTitle("Number of particles");
-    h_Higgs->Draw();
+    h_Higgs->Draw("hist");
     c_H->Print("4l-masa-weighted.png");
 
     for(i=0; i<4; i++){
