@@ -82,8 +82,10 @@ void Analyzer::PlotHistogram(TString dir_name)
        p_H4L = p_Z1 + p_Z2;
       
        //h_Higgs ->Fill( p_H4L.M(), w );
-       if(dir_name == "ggH125")    h_m4l_higgs->Fill( p_H4L.M(), w);
-       else if(dir_name == "qqZZ") h_m4l_pozadina->Fill( p_H4L.M(), w);
+       if(dir_name == "ggH125")    
+           h_m4l_higgs->Fill( p_H4L.M(), w);
+       else if(dir_name == "qqZZ")
+           h_m4l_pozadina->Fill( p_H4L.M(), w);
        else {cout << "Krivo ime direktorija" << dir_name << "\n"; return;}
     }
     /*****************************************/
@@ -217,7 +219,7 @@ void Analyzer::PlotHistogram(TString dir_name)
     c->Print("4l-distribucije-"+dir_name+".png");
 
 
-    /****** MASA 4 LEPTONA = HIGGS ******/    
+    /****** CRTANJE MASE 4 LEPTONA = HIGGS ******/    
     c_H->cd();
     gPad->SetLeftMargin(0.15);
 

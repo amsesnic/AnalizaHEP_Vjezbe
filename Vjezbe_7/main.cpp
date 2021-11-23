@@ -11,7 +11,7 @@ int main(){
     
     hstack->Add(a->h_m4l_higgs);
     hstack->Add(a->h_m4l_pozadina);
-    hstack->Draw();
+    hstack->Draw("hist");
     
     c1->SaveAs("4l-masa-higg+pozadina.png");
     delete c1;
