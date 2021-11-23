@@ -341,20 +341,18 @@ void Analyzer::PlotPublicHistograms()
 
     Double_t scale_factor;
 
+    scale_factor = 1.0/( h_Dkin_bkg->Integral() );
+    h_Dkin_bkg->Scale(scale_factor);
+    h_Dkin_bkg->SetTitle("Kinematic discriminant");
+    h_Dkin_bkg->GetXaxis()->SetTitle("D^{kin}_{bkg}");
+    h_Dkin_bkg->GetYaxis()->SetTitle("Probability");
+    h_Dkin_bkg->SetLineColor(kRed+2);
+    h_Dkin_bkg->Draw("hist");
+
     scale_factor = 1.0/( h_Dkin_sig->Integral() );
     h_Dkin_sig->Scale(scale_factor);
-    h_Dkin_sig->SetTitle("Kinematic discriminant");
-    h_Dkin_sig->GetXaxis()->SetTitle("D^{kin}_{bkg}");
-    h_Dkin_sig->GetYaxis()->SetTitle("Probability");
-    h_Dkin_sig->GetXaxis()->SetRangeUser(0.,1.);
-    h_Dkin_sig->GetYaxis()->SetRangeUser(0.,10.);
-    h_Dkin_sig->SetLineColor(kRed+2);
-    h_Dkin_sig->Draw("hist");
-
-    scale_factor = 1.0/( h_Dkin_bkg->Integral("width") );
-    h_Dkin_bkg->Scale(scale_factor);
-    h_Dkin_bkg->SetLineColor(kBlue-3);
-    h_Dkin_bkg->Draw("hist same");
+    h_Dkin_sig->SetLineColor(kBlue-3);
+    h_Dkin_sig->Draw("hist same");
 
     leg2->AddEntry(h_Dkin_sig, "signal", "l");
     leg2->AddEntry(h_Dkin_bkg, "background", "l");
