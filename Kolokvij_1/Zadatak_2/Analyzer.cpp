@@ -68,7 +68,7 @@ void Analyzer::PlotHistogram()
 
     TLegend *leg = new TLegend(0.65, 0.75, 0.9, 0.9);
     leg->AddEntry(h_ele_pt, "ele_pt", "l");
-    leg->AddEntry(h_ele_eelepout, "h_ele_eelepout", "f");
+    leg->AddEntry(h_ele_eelepout, "ele_eelepout", "f");
     leg->Draw();
  
     c->Print("Zad2_histos.png");
