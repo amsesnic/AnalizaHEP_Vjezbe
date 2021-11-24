@@ -397,7 +397,7 @@ void Analyzer::PlotPublicHistograms()
     h_2d_bkg->SetTitle("background");
     h_2d_bkg->GetXaxis()->SetTitle("m_{4l}");
     h_2d_bkg->GetYaxis()->SetTitle("D^{kin}");
-    h_2d_bkg->Draw("col");
+    h_2d_bkg->Draw("colz");
     
 
     c3->cd(4);                   // signal
@@ -406,7 +406,7 @@ void Analyzer::PlotPublicHistograms()
     h_2d_sig->SetTitle("signal");
     h_2d_sig->GetXaxis()->SetTitle("m_{4l}");
     h_2d_sig->GetYaxis()->SetTitle("D^{kin}");
-    h_2d_sig->Draw("col");
+    h_2d_sig->Draw("colz");
 
 
     c3->SaveAs("2Dhistos.png");
