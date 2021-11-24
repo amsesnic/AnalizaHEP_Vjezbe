@@ -1453,6 +1453,8 @@ public :
    TH1F *h_m4l_higgs;
    TH1F *h_Dkin_sig;
    TH1F *h_Dkin_bkg;
+   TH2F *h_2d_sig;
+   TH2F *h_2d_bkg;
 };
 
 #endif
@@ -1480,6 +1482,8 @@ Analyzer::Analyzer() : fChain(0)
    h_m4l_higgs    = new TH1F("h_m4l_higgs", "4l from Higgs", 50, 70., 170.);
    h_Dkin_sig     = new TH1F("h_Dkin_sig", "kin discriminant for signal events", 50, 0., 1.);
    h_Dkin_bkg     = new TH1F("h_Dkin_bkg", "kin discriminant for background  events", 50, 0., 1.);
+   h_2d_sig       = new TH2F("h_2d_sig", "signal", 50, 70., 170.,  50, 0., 1.);
+   h_2d_bkg       = new TH2F("h_2d_bkg", "background", 50, 70., 170.,  50, 0., 1.);
 
 }
 

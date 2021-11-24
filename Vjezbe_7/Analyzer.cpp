@@ -33,6 +33,8 @@ void Analyzer::PlotHistogram(TString dir_name)
         naslov = "h_LepBDT"+std::to_string(i);
         h_LepBDT[i] = new TH1F(naslov.c_str(),  naslov.c_str(), 48, -2., 10.);
     }
+
+
     
     /*******   NAPUNI HISTOGRAME U Loop   ********************/
     //Kod kopiran iz Loop() metode
@@ -91,10 +93,12 @@ void Analyzer::PlotHistogram(TString dir_name)
        if(dir_name == "ggH125"){    
            h_m4l_higgs->Fill( p_H4L.M(), w);
            h_Dkin_sig->Fill(Dkin, w);
+           h_2d_sig->Fill(p_H4L.M(), Dkin, w);
        }
        else if(dir_name == "qqZZ"){
            h_m4l_pozadina->Fill( p_H4L.M(), w);
-           h_Dkin_bkg->Fill(Dkin, w);  
+           h_Dkin_bkg->Fill(Dkin, w);
+           h_2d_bkg->Fill(p_H4L.M(), Dkin, w);  
        }
        else {cout << "Krivo ime direktorija" << dir_name << "\n"; return;}
 
@@ -317,6 +321,7 @@ Double_t Analyzer::ReadHistogramFromFile(TString dir_name)
 void Analyzer::PlotPublicHistograms()
 {
     /********* Masa 4 leptona: Higg + pozadina *********************/
+
     TCanvas *c1 = new TCanvas("c1", "higgs i pozadina",0,0, 800, 600);
     THStack *hstack = new THStack("hstack", "Four lepton mass");
     TLegend *leg  = new TLegend(0.7, 0.8, 0.9, 0.9); //koordinate dvaju vrhova
@@ -335,7 +340,10 @@ void Analyzer::PlotPublicHistograms()
     c1->SaveAs("4l-masa-higg+pozadina.png");
 
 
+
+
     /********* Kinematicka diskriminatna **************************/
+
     TCanvas *c2 = new TCanvas("c2", "kinematicka diskriminanta",0,0, 800, 600);
     TLegend *leg2 = new TLegend(0.7, 0.8, 0.9, 0.9);
 
@@ -362,8 +370,50 @@ void Analyzer::PlotPublicHistograms()
 
     c2->SaveAs("KinDiscriminants.png");
 
+
+
+    /***************** 2D HISTOGRAMI *********************/
+
+    TCanvas *c3 = new TCanvas("c3", "2D histos", 0, 0, 1000, 800);
+
+    c3->Divide(2,2);
+    gStyle->SetOptStat(0);
+
+    c3->cd(1);                   // diskriminanta
+    gPad->SetLeftMargin(0.15);
+    h_Dkin_bkg->Draw("hist");
+    h_Dkin_sig->Draw("hist same");
+    leg2->Draw();
+
+
+
+    c3->cd(2);                   // Zad4: ROC
+
+
+
+    c3->cd(3);                   // background
+    gPad->SetLeftMargin(0.15);
+
+    h_2d_bkg->SetTitle("background");
+    h_2d_bkg->GetXaxis()->SetTitle("m_{4l}");
+    h_2d_bkg->GetYaxis()->SetTitle("D^{kin}");
+    h_2d_bkg->Draw("col");
+    
+
+    c3->cd(4);                   // signal
+    gPad->SetLeftMargin(0.15);
+
+    h_2d_sig->SetTitle("signal");
+    h_2d_sig->GetXaxis()->SetTitle("m_{4l}");
+    h_2d_sig->GetYaxis()->SetTitle("D^{kin}");
+    h_2d_sig->Draw("col");
+
+
+    c3->SaveAs("2Dhistos.png");
+
     delete c1;
     delete c2;
+    delete c3;
     delete hstack;
     delete leg;
     delete leg2;    
