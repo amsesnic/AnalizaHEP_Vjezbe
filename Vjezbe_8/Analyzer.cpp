@@ -371,7 +371,7 @@ void Analyzer::PlotPublicHistograms()
 
     f_bw->SetLineColor(kRed);
     f_sq->SetLineColor(kBlue);
-    f_sum->SetLineColor(kGreen);
+    f_sum->SetLineColor(kGreen-7);
 
     f_sum->SetTitle("Teorijski model");
     f_sum->Draw();
