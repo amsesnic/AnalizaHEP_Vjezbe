@@ -331,42 +331,42 @@ void Analyzer::PlotPublicHistograms()
     h_m4l_higgs->Add(h_m4l_pozadina); //higgsu zbroji pozadinu i nacrtaj higgsa novog
     //hstack->Add(this->h_m4l_higgs);
 
-    h_m4l_higgs->DrawCopy("P E1 X0");
+    h_m4l_higgs->Draw("E1 X0");
     h_m4l_higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");      //OVO NAKON Draw()!!!
     h_m4l_higgs->GetYaxis()->SetTitle("Number of events / 2 GeV");
 
 
 
-    c1->cd(1); // LIJEVO
+    c1->cd(1); // LIJEVO (Parametri promijenjeni nakon fita!)
     TF1 *f_bw = new TF1("f_bw", "[0]*[1]/( (x^2 - [2]^2)^2 + 0.25*[1]^2 )", 110, 150);
     f_bw->SetParName(0, "D");
     f_bw->SetParName(1, "#Gamma");
     f_bw->SetParName(2, "M");
-    f_bw->SetParameter("D", 70.);
-    f_bw->SetParameter("#Gamma", 200.);
-    f_bw->SetParameter("M", 125.);
+    f_bw->SetParameter("D", 8311.);
+    f_bw->SetParameter("#Gamma", 837.);
+    f_bw->SetParameter("M", 124.6);
 
     TF1 *f_sq = new TF1("f_sq", "[0] + [1]*x + [2]*x^2", 110, 150);
     f_sq->SetParName(0, "A");
     f_sq->SetParName(1, "B");
     f_sq->SetParName(2, "C");
-    f_sq->SetParameter("A", 1.);
-    f_sq->SetParameter("B", 0.01);
-    f_sq->SetParameter("C", -0.0001);
+    f_sq->SetParameter("A", 40.);
+    f_sq->SetParameter("B", -0.46);
+    f_sq->SetParameter("C", -0.0018);
 
     TF1 *f_sum = new TF1("f_sum", "[0]*[1]/( (x^2 - [2]^2)^2 + 0.25*[1]^2 )  +  [3] + [4]*x + [5]*x^2", 110, 150);
     f_sum->SetParName(0, "D");
     f_sum->SetParName(1, "#Gamma");
     f_sum->SetParName(2, "M");
-    f_sum->SetParameter("D", 70.);
-    f_sum->SetParameter("#Gamma", 200.);
-    f_sum->SetParameter("M", 125.);
+    f_sum->SetParameter("D", 8311.);
+    f_sum->SetParameter("#Gamma", 837.);
+    f_sum->SetParameter("M", 124.6);
     f_sum->SetParName(3, "A");
     f_sum->SetParName(4, "B");
     f_sum->SetParName(5, "C");
-    f_sum->SetParameter("A", 1.);
-    f_sum->SetParameter("B", 0.01);
-    f_sum->SetParameter("C", -0.0001);
+    f_sum->SetParameter("A", 40.);
+    f_sum->SetParameter("B", -0.46);
+    f_sum->SetParameter("C", -0.0018);
   
 
     f_bw->SetLineColor(kRed);
