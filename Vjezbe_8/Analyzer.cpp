@@ -350,7 +350,7 @@ void Analyzer::PlotPublicHistograms()
     f_sq->SetParName(0, "A");
     f_sq->SetParName(1, "B");
     f_sq->SetParName(2, "C");
-    f_sq->SetParameter("A", 40.);
+    f_sq->SetParameter("A", 34.);
     f_sq->SetParameter("B", -0.46);
     f_sq->SetParameter("C", -0.0018);
 
@@ -364,7 +364,7 @@ void Analyzer::PlotPublicHistograms()
     f_sum->SetParName(3, "A");
     f_sum->SetParName(4, "B");
     f_sum->SetParName(5, "C");
-    f_sum->SetParameter("A", 40.);
+    f_sum->SetParameter("A", 34.);
     f_sum->SetParameter("B", -0.46);
     f_sum->SetParameter("C", -0.0018);
   
