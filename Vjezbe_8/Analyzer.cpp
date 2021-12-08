@@ -107,7 +107,7 @@ void Analyzer::PlotHistogram(TString dir_name)
 
 
     c->Divide(2,2);
-    //gStyle->SetOptStat(0);
+    gStyle->SetOptStat(0);
 
     /******* PANEL 1 (gore lijevo): LepPt *******/
     c->cd(1);
@@ -320,35 +320,30 @@ Double_t Analyzer::ReadHistogramFromFile(TString dir_name)
 
 void Analyzer::PlotPublicHistograms()
 {
-    /********* Masa 4 leptona: Higg + pozadina *********************/
+    /********* Masa 4 leptona: Higgs + pozadina *********************/
 
     TCanvas *c1 = new TCanvas("c1", "higgs i pozadina",0,0, 1000, 600);
-    THStack *hstack = new THStack("hstack", "Four lepton mass");
-    TLegend *leg  = new TLegend(0.7, 0.8, 0.9, 0.9); //koordinate dvaju vrhova
-
+    //THStack *hstack = new THStack("hstack", "Four lepton mass");
 
     c1->Divide(2,1);
 
     c1->cd(2); // DESNO
-    h_m4l_higgs->Add(h_m4l_pozadina); //prvo dodaj pozadinu
-    //hstack->Add(this->h_m4l_higgs);    //onda dodaj higgsa da se zbroji s pozadinom
+    h_m4l_higgs->Add(h_m4l_pozadina); //higgsu zbroji pozadinu i nacrtaj higgsa novog
+    //hstack->Add(this->h_m4l_higgs);
 
-    h_m4l_higgs->Draw("p E1 X0");
+    h_m4l_higgs->DrawCopy("P E1 X0");
     h_m4l_higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");      //OVO NAKON Draw()!!!
     h_m4l_higgs->GetYaxis()->SetTitle("Number of events / 2 GeV");
 
-    //leg->AddEntry(h_m4l_higgs, "gg->H", "fl");
-    //leg->AddEntry(h_m4l_pozadina, "qq->ZZ", "fl");
-    //leg->Draw();
 
 
     c1->cd(1); // LIJEVO
     TF1 *f_bw = new TF1("f_bw", "[0]*[1]/( (x^2 - [2]^2)^2 + 0.25*[1]^2 )", 110, 150);
     f_bw->SetParName(0, "D");
-    f_bw->SetParName(1, "G");
+    f_bw->SetParName(1, "#Gamma");
     f_bw->SetParName(2, "M");
     f_bw->SetParameter("D", 70.);
-    f_bw->SetParameter("G", 200.);
+    f_bw->SetParameter("#Gamma", 200.);
     f_bw->SetParameter("M", 125.);
 
     TF1 *f_sq = new TF1("f_sq", "[0] + [1]*x + [2]*x^2", 110, 150);
@@ -361,10 +356,10 @@ void Analyzer::PlotPublicHistograms()
 
     TF1 *f_sum = new TF1("f_sum", "[0]*[1]/( (x^2 - [2]^2)^2 + 0.25*[1]^2 )  +  [3] + [4]*x + [5]*x^2", 110, 150);
     f_sum->SetParName(0, "D");
-    f_sum->SetParName(1, "G");
+    f_sum->SetParName(1, "#Gamma");
     f_sum->SetParName(2, "M");
     f_sum->SetParameter("D", 70.);
-    f_sum->SetParameter("G", 200.);
+    f_sum->SetParameter("#Gamma", 200.);
     f_sum->SetParameter("M", 125.);
     f_sum->SetParName(3, "A");
     f_sum->SetParName(4, "B");
@@ -377,16 +372,22 @@ void Analyzer::PlotPublicHistograms()
     f_bw->SetLineColor(kRed);
     f_sq->SetLineColor(kBlue);
     f_sum->SetLineColor(kGreen);
- 
+
     f_sum->SetTitle("Teorijski model");
     f_sum->Draw();
     f_bw->Draw("same");
     f_sq->Draw("same");
+
+    TLegend *leg  = new TLegend(0.5, 0.7, 0.9, 0.9); //koordinate dvaju vrhova
+    leg->AddEntry(f_bw, "BW(x)=#frac{D#Gamma}{(x^{2}-M^{2})^{2} + 0.25#Gamma^{2}}", "l");
+    leg->AddEntry(f_sq, "Q(x)=A + Bx + Cx^{2}", "l");
+    leg->AddEntry(f_sum, "BW(x)+Q(x)", "l");
+    leg->Draw();
     
     // FITANJE
     c1->cd(2);
     h_m4l_higgs->Fit(f_sum);
-    //
+    gStyle->SetOptFit();
 
     c1->SaveAs("4l-masa-higg+pozadina.png");
 
@@ -465,7 +466,7 @@ void Analyzer::PlotPublicHistograms()
     delete c1;
     delete c2;
     delete c3;
-    delete hstack;
+    //delete hstack;
     delete leg;
     delete leg2;    
 }
