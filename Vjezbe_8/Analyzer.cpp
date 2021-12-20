@@ -1,6 +1,39 @@
 #define Analyzer_cxx
 #include <Analyzer.h>
 
+void Analyzer::Model_70_170GeV()
+{
+    TCanvas *cm = new TCanvas("cm", "model", 0,0,1000,800);
+
+    TF1 *f_model = new TF1("f_model", "[0]*[1]/( (x^2 - [2]^2)^2 + 0.25*[1]^2 )  +  [3] + [4]*x + [5]*x^2  +  [6]*[7]/( (x^2 - [8]^2)^2 + 0.25*[7]^2 )", 70., 170.);
+    f_model->SetParNames("D_{Higgs}", "#Gamma_{Higgs}", "M_{Higgs}", "A_{Higgs}", "B_{Higgs}", "C_{Higgs}", "D_{Z}", "#Gamma_{Z}", "M_{Z}");
+    f_model->SetParameters(11248., 927., 124.4, -10., 0.17, -0.0003, 19266., 760., 90.8);
+    f_model->SetTitle("Teorijski model");
+    f_model->SetLineColor(kViolet+4);
+
+
+    TLegend *leg = new TLegend(0.2, 0.7, 0.9, 0.9);
+    leg->AddEntry(f_model, "f(x)=#frac{D_{Higgs}#Gamma_{Higgs}}{(x^{2}-M_{Higgs}^{2})^{2} + 0.25#Gamma_{Higgs}^{2}} + A_{Higgs} + B_{Higgs}x + C_{Higgs}x^{2} + #frac{D_{Z}#Gamma_{Z}}{(x^{2}-M_{Z}^{2})^{2}}" , "l");
+    leg->Draw();
+
+    h_m4l_higgs->Add(h_m4l_pozadina); // naredba ako nije pozvana PlotPublicHistograms()!
+    h_m4l_higgs->Fit(f_model, "L"); // "WL" = use Loglikelihood with weighted bin contents
+    gStyle->SetOptFit();
+    
+    h_m4l_higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");
+    h_m4l_higgs->GetYaxis()->SetTitle("Number of events / 1 GeV");
+    h_m4l_higgs->Draw("E1 X0");
+    f_model->Draw("same");
+
+    cm->SaveAs("teorija.png");
+
+    delete cm;
+    delete f_model;
+    delete leg;
+
+
+}
+
 void Analyzer::PlotHistogram(TString dir_name)
 {
     //stvori file i ucitaj stablo iz mape koju ti dam
@@ -333,7 +366,7 @@ void Analyzer::PlotPublicHistograms()
 
     h_m4l_higgs->Draw("E1 X0");
     h_m4l_higgs->GetXaxis()->SetTitle("m_{4l} (GeV)");      //OVO NAKON Draw()!!!
-    h_m4l_higgs->GetYaxis()->SetTitle("Number of events / 2 GeV");
+    h_m4l_higgs->GetYaxis()->SetTitle("Number of events / 1 GeV");
 
 
 
