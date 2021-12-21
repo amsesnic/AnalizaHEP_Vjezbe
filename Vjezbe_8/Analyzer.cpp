@@ -21,8 +21,8 @@ void Analyzer::Model_70_170GeV()
     h_m4l_higgs->Draw("E1 X0");
     f_model->Draw("same");
 
-    TLegend *leg = new TLegend(0.2, 0.5, 0.8, 0.9);
-    leg->AddEntry(f_model, "#splitline{ f(x)=#frac{D_{Higgs}#Gamma_{Higgs}}{(x^{2}-M_{Higgs}^{2})^{2} + }{ 0.25#Gamma_{Higgs}^{2}} + A_{Higgs} + B_{Higgs}x + C_{Higgs}x^{2} + #frac{D_{Z}#Gamma_{Z}}{(x^{2}-M_{Z}^{2})^{2}} }" , "l");
+    TLegend *leg = new TLegend(0.62, 0.25, 0.98, 0.49);
+    leg->AddEntry(f_model, "#splitline{ f(x)=#frac{D_{Higgs}#Gamma_{Higgs}}{(x^{2}-M_{Higgs}^{2})^{2} +  0.25#Gamma_{Higgs}^{2}} }{ #splitline{+ A_{Higgs} + B_{Higgs}x + C_{Higgs}x^{2} }{+ #frac{D_{Z}#Gamma_{Z}}{(x^{2}-M_{Z}^{2})^{2} +  0.25#Gamma_{Z}^{2} } } }" , "l");
     leg->Draw();
 
     cm->SaveAs("teorija.png");
