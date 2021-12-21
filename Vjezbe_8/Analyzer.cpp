@@ -12,10 +12,6 @@ void Analyzer::Model_70_170GeV()
     f_model->SetLineColor(kViolet+4);
 
 
-    TLegend *leg = new TLegend(0.2, 0.7, 0.9, 0.9);
-    leg->AddEntry(f_model, "f(x)=#frac{D_{Higgs}#Gamma_{Higgs}}{(x^{2}-M_{Higgs}^{2})^{2} + 0.25#Gamma_{Higgs}^{2}} + A_{Higgs} + B_{Higgs}x + C_{Higgs}x^{2} + #frac{D_{Z}#Gamma_{Z}}{(x^{2}-M_{Z}^{2})^{2}}" , "l");
-    leg->Draw();
-
     h_m4l_higgs->Add(h_m4l_pozadina); // naredba ako nije pozvana PlotPublicHistograms()!
     h_m4l_higgs->Fit(f_model, "L"); // "WL" = use Loglikelihood with weighted bin contents
     gStyle->SetOptFit();
@@ -24,6 +20,10 @@ void Analyzer::Model_70_170GeV()
     h_m4l_higgs->GetYaxis()->SetTitle("Number of events / 1 GeV");
     h_m4l_higgs->Draw("E1 X0");
     f_model->Draw("same");
+
+    TLegend *leg = new TLegend(0.2, 0.5, 0.8, 0.9);
+    leg->AddEntry(f_model, "#splitline{ f(x)=#frac{D_{Higgs}#Gamma_{Higgs}}{(x^{2}-M_{Higgs}^{2})^{2} + }{ 0.25#Gamma_{Higgs}^{2}} + A_{Higgs} + B_{Higgs}x + C_{Higgs}x^{2} + #frac{D_{Z}#Gamma_{Z}}{(x^{2}-M_{Z}^{2})^{2}} }" , "l");
+    leg->Draw();
 
     cm->SaveAs("teorija.png");
 
