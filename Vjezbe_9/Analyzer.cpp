@@ -26,7 +26,16 @@ void Analyzer::PlotHistogram()
     h_t->GetXaxis()->SetTitle("t_{1/2}");
     h_t->GetYaxis()->SetTitle("Number of events");
     h_t->SetLineColor(kMagenta+1);
-    h_t->Draw("hist");
+    h_t->Draw("E1 X0");
+
+    TF1 *fja = new TF1("fja", "1./[0]*[1]*exp(-x/[0])", 0., 12.);
+    fja->SetParNames("#tau", "N_{0}");
+    fja->SetParameters(5., 1000.);
+    fja->SetLineColor(kSpring-1);
+
+    h_t->Fit(fja);
+
+    fja->Draw("same");
 
     c->SaveAs("poluraspad.png");
 }
