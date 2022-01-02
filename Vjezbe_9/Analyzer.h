@@ -15,6 +15,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 #include <TF1.h>
+#include <TLegend.h>
 
 // Header file for the classes stored in the TTree if any.
 

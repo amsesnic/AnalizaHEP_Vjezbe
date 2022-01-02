@@ -3,7 +3,7 @@
 
 void Analyzer::PlotHistogram()
 {
-    TCanvas *c   = new TCanvas("c", "Histogram", 0, 0, 1000, 800);
+    TCanvas *c   = new TCanvas("c", "Histogram", 0, 0, 1200, 600);
 
     /*petlja iz Loop()*/
     if (fChain == 0) return;
@@ -22,6 +22,9 @@ void Analyzer::PlotHistogram()
     gStyle->SetOptStat(0);
     gPad->SetLeftMargin(0.15);
 
+    c->Divide(2,1);
+
+    c->cd(1);
     h_t->SetTitle("Vrijeme poluraspada");
     h_t->GetXaxis()->SetTitle("t_{1/2}");
     h_t->GetYaxis()->SetTitle("Number of events");
@@ -36,6 +39,16 @@ void Analyzer::PlotHistogram()
     h_t->Fit(fja);
 
     fja->Draw("same");
+
+    c->cd(2);
+    TF1 *f_likelihood = new TF1("f_likelihood", "245.9/x*exp(-1./x)", 0., 12.);
+    f_likelihood->SetLineColor(kRed);
+    f_likelihood->SetTitle("Likelihood function;#tau / 1 s;L(#tau)");
+    f_likelihood->Draw();
+
+    TLegend *leg = new TLegend(0.65,0.75,0.9,0.9);
+    leg->AddEntry(f_likelihood, "N_{0}#frac{1}{#tau}e^{-1/#tau}", "l");
+    leg->Draw();
 
     c->SaveAs("poluraspad.png");
 }
