@@ -17,6 +17,8 @@
 #include <TF1.h>
 #include <TLegend.h>
 
+#include <fstream>
+
 // Header file for the classes stored in the TTree if any.
 
 class Analyzer {

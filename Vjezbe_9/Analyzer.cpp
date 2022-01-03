@@ -5,6 +5,12 @@ void Analyzer::PlotHistogram()
 {
     TCanvas *c   = new TCanvas("c", "Histogram", 0, 0, 1200, 600);
 
+    Float_t sum_t = 0.;
+
+    std::ofstream fout;
+    fout.open("mjerenje.txt");
+    fout << "#     tau\n";
+
     /*petlja iz Loop()*/
     if (fChain == 0) return;
     Long64_t nentries = fChain->GetEntriesFast();
@@ -16,7 +22,10 @@ void Analyzer::PlotHistogram()
         // if (Cut(ientry) < 0) continue;
 
         h_t->Fill(t);
+        fout << (jentry+1) << " " << t << "\n";
+        sum_t += t;
     }
+    std::cout << "\nParameter estimation using Maximum likelihood method: \n#tau = " << sum_t/nentries << std::endl;
 
     gStyle->SetOptFit();
     gStyle->SetOptStat(0);
