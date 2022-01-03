@@ -16,6 +16,7 @@
 #include <TCanvas.h>
 #include <TF1.h>
 #include <TLegend.h>
+#include <TMath.h>
 
 #include <fstream>
 

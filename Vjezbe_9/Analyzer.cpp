@@ -3,7 +3,7 @@
 
 void Analyzer::PlotHistogram()
 {
-    TCanvas *c   = new TCanvas("c", "Histogram", 0, 0, 1200, 600);
+    TCanvas *c   = new TCanvas("c", "Histogram", 0, 0, 1500, 400);
 
     Float_t sum_t = 0.;
 
@@ -25,13 +25,15 @@ void Analyzer::PlotHistogram()
         fout << (jentry+1) << " " << t << "\n";
         sum_t += t;
     }
-    std::cout << "\nParameter estimation using Maximum likelihood method: \n#tau = " << sum_t/nentries << std::endl;
+
+    std::cout << "sum_t = " << sum_t << std::endl;
+    std::cout << "nentries = " << nentries << std::endl;
 
     gStyle->SetOptFit();
     gStyle->SetOptStat(0);
     gPad->SetLeftMargin(0.15);
 
-    c->Divide(2,1);
+    c->Divide(3,1);
 
     c->cd(1);
     h_t->SetTitle("Vrijeme poluraspada");
@@ -55,11 +57,28 @@ void Analyzer::PlotHistogram()
     f_likelihood->SetTitle("Likelihood function;#tau / 1 s;L(#tau)");
     f_likelihood->Draw();
 
-    TLegend *leg = new TLegend(0.65,0.75,0.9,0.9);
+    TLegend *leg = new TLegend(0.60,0.75,0.9,0.9);
     leg->AddEntry(f_likelihood, "N_{0}#frac{1}{#tau}e^{-1/#tau}", "l");
     leg->Draw();
 
+    c->cd(3);
+    gPad->SetLeftMargin(0.15);
+    TF1 *f_logL = new TF1("f_logL", "2.*([0]*TMath::Log(x) + [1]/x - [0]*TMath::Log(245.9) )", 0.2, 5.0);
+    f_logL->SetParameters(nentries, sum_t);
+    f_logL->SetLineColor(kBlue);
+    f_logL->SetTitle("-2lnL(#tau); #tau / 1 s; -2lnL(#tau)");
+    f_logL->Draw();
+
+    TLegend *leg2 = new TLegend(0.45,0.75,0.9,0.9);
+    leg2->AddEntry(f_logL, "2(Nln#tau + #frac{1}{#tau}#Sigma_{i=1}^{N}t_{i} - NlnN_{0})", "l");
+    leg2->Draw();     
+
     c->SaveAs("poluraspad.png");
+
+    Double_t tau_min = f_logL->GetMinimumX();
+    std::cout << "\nParameter estimation via function fitting: tau = " << fja->GetParameter("#tau") << std::endl;
+    std::cout << "Parameter estimation using Max likelihood method: tau = " << sum_t/nentries << std::endl;
+    std::cout << "Parameter estimation using -2lnL: tau_min = " << tau_min << std::endl;
 }
 
 
