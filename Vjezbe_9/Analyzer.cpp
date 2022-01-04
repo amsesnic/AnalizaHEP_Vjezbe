@@ -48,11 +48,14 @@ void Analyzer::PlotHistogram()
     fja->SetLineColor(kSpring-1);
 
     h_t->Fit(fja);
+    Double_t tau_fit = fja->GetParameter("#tau");
+    Double_t N_0     = fja->GetParameter("N_{0}");
 
     fja->Draw("same");
 
     c->cd(2);
-    TF1 *f_likelihood = new TF1("f_likelihood", "245.9/x*exp(-1./x)", 0., 12.);
+    TF1 *f_likelihood = new TF1("f_likelihood", "[0]/x*exp(-1./x)", 0., 12.);
+    f_likelihood->SetParameter(0, N_0);
     f_likelihood->SetLineColor(kRed);
     f_likelihood->SetTitle("Likelihood function;#tau / 1 s;L(#tau)");
     f_likelihood->Draw();
@@ -63,8 +66,8 @@ void Analyzer::PlotHistogram()
 
     c->cd(3);
     gPad->SetLeftMargin(0.15);
-    TF1 *f_logL = new TF1("f_logL", "2.*([0]*TMath::Log(x) + [1]/x - [0]*TMath::Log(245.9) )", 0.2, 5.0);
-    f_logL->SetParameters(nentries, sum_t);
+    TF1 *f_logL = new TF1("f_logL", "2.*([0]*TMath::Log(x) + [1]/x - [0]*TMath::Log([2]) )", 0.2, 5.0);
+    f_logL->SetParameters(nentries, sum_t, N_0);
     f_logL->SetLineColor(kBlue);
     f_logL->SetTitle("-2lnL(#tau); #tau / 1 s; -2lnL(#tau)");
     f_logL->Draw();
@@ -75,10 +78,19 @@ void Analyzer::PlotHistogram()
 
     c->SaveAs("poluraspad.png");
 
-    Double_t tau_min = f_logL->GetMinimumX();
-    std::cout << "\nParameter estimation via function fitting: tau = " << fja->GetParameter("#tau") << std::endl;
-    std::cout << "Parameter estimation using Max likelihood method: tau = " << sum_t/nentries << std::endl;
-    std::cout << "Parameter estimation using -2lnL: tau_min = " << tau_min << std::endl;
+    Double_t tau_analytical = sum_t/nentries;
+/*greska?!*/    Double_t err_analytical = TMath::Sqrt( N_0/TMath::Power(tau_analytical,3) * TMath::Exp(-sum_t/tau_analytical) * ( TMath::Power(sum_t/tau_analytical,2) - 4.*sum_t/tau_analytical + 2. ) );
+
+    Double_t tau_logmin = f_logL->GetMinimumX();
+    Double_t err_logmin_left = tau_logmin - f_logL->GetX(f_logL->GetMinimum()+1., 0.5, tau_logmin); //ogranicih domenu potrage
+    Double_t err_logmin_right = f_logL->GetX(f_logL->GetMinimum()+1., tau_logmin, 3.) - tau_logmin;
+
+    std::cout << "\nParameter estimation via function fitting:\n";
+    std::cout << "  tau = " << tau_fit << " +- " << fja->GetParError(0) << std::endl;
+    std::cout << "Parameter estimation using Max likelihood method:\n";
+    std::cout << "  tau = " << tau_analytical << " +- " << err_analytical << " KRIVO" << std::endl;
+    std::cout << "Parameter estimation using -2lnL:\n";
+    std::cout << "  tau = " << tau_logmin << " + " << err_logmin_right << " - " << err_logmin_left << std::endl;
 }
 
 
