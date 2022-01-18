@@ -76,6 +76,7 @@ void Analyzer::MVATraining()
    std::cout << std::endl;
    std::cout << "==> Start TMVAClassification" << std::endl;
    // Select methods (don't look at this code - not of interest)
+   /*** ORIGINAL:
    if (myMethodList != "") {
       for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++) it->second = 0;
       std::vector<TString> mlist = TMVA::gTools().SplitString( myMethodList, ',' );
@@ -90,27 +91,30 @@ void Analyzer::MVATraining()
          Use[regMethod] = 1;
       }
    }
+   ***/
    // --------------------------------------------------------------------------------------------------
    // Here the preparation phase begins
    // Read training and test data
    // (it is also possible to use ASCII format as input -> see TMVA Users Guide)
    TFile *input(0);
-   TString fname = "./Electrons.root";//ORIGINAL: TString fname = "./tmva_class_example.root";
+   TString fname = "/home/public/data/ElectronTraining/Electrons.root";
+   /*** ORIGINAL:
    if (!gSystem->AccessPathName( fname )) {
       input = TFile::Open( fname ); // check if file in local directory exists
    }
    else {
       TFile::SetCacheFileDir(".");
       input = TFile::Open("http://root.cern.ch/files/tmva_class_example.root", "CACHEREAD");
-   }
+   }***/
+   input = TFile::Open( fname ); // check if file in local directory exists
    if (!input) {
       std::cout << "ERROR: could not open data file" << std::endl;
       exit(1);
    }
    std::cout << "--- TMVAClassification       : Using input file: " << input->GetName() << std::endl;
    // Register the training and test trees
-   TTree *signalTree     = (TTree*)input->Get("TreeS");
-   TTree *background     = (TTree*)input->Get("TreeB");
+   TTree *signalTree     = (TTree*)input->Get("signal");//(TTree*)input->Get("TreeS");
+   TTree *background     = (TTree*)input->Get("background");//(TTree*)input->Get("TreeB");
    // Create a ROOT output file where TMVA will store ntuples, histograms, etc.
    TString outfileName( "TMVA.root" );
    TFile* outputFile = TFile::Open( outfileName, "RECREATE" );
@@ -135,15 +139,24 @@ void Analyzer::MVATraining()
    // Define the input variables that shall be used for the MVA training
    // note that you may also use variable expressions, such as: "3*var1/var2*abs(var3)"
    // [all types of expressions that can also be parsed by TTree::Draw( "expression" )]
+
+   /*** ORIGINAL:
    dataloader->AddVariable( "myvar1 := var1+var2", 'F' );
    dataloader->AddVariable( "myvar2 := var1-var2", "Expression 2", "", 'F' );
    dataloader->AddVariable( "var3",                "Variable 3", "units", 'F' );
    dataloader->AddVariable( "var4",                "Variable 4", "units", 'F' );
+   ***/
+   dataloader->AddVariable( "ele_pt", 'F' );
+   dataloader->AddVariable( "scl_eta", "Expression 2", "", 'F' );
+   dataloader->AddVariable( "ele_hadronicOverEm",                "Variable 3", "units", 'F' );
+   dataloader->AddVariable( "ele_gsfchi2",                "Variable 4", "units", 'F' );	
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
    // input variables, the response values of all trained MVAs, and the spectator variables
+   /*** ORIGINAL:
    dataloader->AddSpectator( "spec1 := var1*2",  "Spectator 1", "units", 'F' );
    dataloader->AddSpectator( "spec2 := var1*3",  "Spectator 2", "units", 'F' );
+   ***/
    // global event weights per tree (see below for setting event-wise weights)
    Double_t signalWeight     = 1.0;
    Double_t backgroundWeight = 1.0;
@@ -191,7 +204,8 @@ void Analyzer::MVATraining()
    // Set individual event weights (the variables must exist in the original TTree)
    // -  for signal    : `dataloader->SetSignalWeightExpression    ("weight1*weight2");`
    // -  for background: `dataloader->SetBackgroundWeightExpression("weight1*weight2");`
-   dataloader->SetBackgroundWeightExpression( "weight" );
+   /*** ORIGINAL:
+   dataloader->SetBackgroundWeightExpression( "weight" );***/
    // Apply additional cuts on the signal and background samples (can be different)
    TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
    TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";
@@ -407,8 +421,11 @@ void Analyzer::MVATraining()
    delete factory;
    delete dataloader;
    // Launch the GUI for the root macros
+   /*** ORIGINAL:
    if (!gROOT->IsBatch()) TMVA::TMVAGui( outfileName );
+
    return 0;
+   ***/
 
 
 }

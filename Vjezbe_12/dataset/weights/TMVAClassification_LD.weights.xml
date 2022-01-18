@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<MethodSetup Method="LD::LD">
+  <GeneralInfo>
+    <Info name="TMVA Release" value="4.2.1 [262657]"/>
+    <Info name="ROOT Release" value="6.24/06 [399366]"/>
+    <Info name="Creator" value="asesnic"/>
+    <Info name="Date" value="Tue Jan 18 23:45:05 2022"/>
+    <Info name="Host" value="Linux buildhw-x86-15.iad2.fedoraproject.org 5.15.6-200.fc35.x86_64 #1 SMP Wed Dec 1 13:41:10 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux"/>
+    <Info name="Dir" value="/home/asesnic/Vjezbe/Vjezbe_12"/>
+    <Info name="Training events" value="2000"/>
+    <Info name="TrainingTime" value="1.74093246e-03"/>
+    <Info name="AnalysisType" value="Classification"/>
+  </GeneralInfo>
+  <Options>
+    <Option name="V" modified="Yes">False</Option>
+    <Option name="VerbosityLevel" modified="No">Default</Option>
+    <Option name="VarTransform" modified="Yes">None</Option>
+    <Option name="H" modified="Yes">True</Option>
+    <Option name="CreateMVAPdfs" modified="Yes">True</Option>
+    <Option name="IgnoreNegWeightsInTraining" modified="No">False</Option>
+  </Options>
+  <Variables NVar="4">
+    <Variable VarIndex="0" Expression="ele_pt" Label="ele_pt" Title="ele_pt" Unit="" Internal="ele_pt" Type="F" Min="5.00599241e+00" Max="3.06198883e+02"/>
+    <Variable VarIndex="1" Expression="scl_eta" Label="scl_eta" Title="Expression 2" Unit="" Internal="scl_eta" Type="F" Min="-2.55902076e+00" Max="2.58148694e+00"/>
+    <Variable VarIndex="2" Expression="ele_hadronicOverEm" Label="ele_hadronicOverEm" Title="Variable 3" Unit="units" Internal="ele_hadronicOverEm" Type="F" Min="0.00000000e+00" Max="2.11394310e+01"/>
+    <Variable VarIndex="3" Expression="ele_gsfchi2" Label="ele_gsfchi2" Title="Variable 4" Unit="units" Internal="ele_gsfchi2" Type="F" Min="1.93670884e-01" Max="1.90824783e+02"/>
+  </Variables>
+  <Spectators NSpec="0"/>
+  <Classes NClass="2">
+    <Class Name="Signal" Index="0"/>
+    <Class Name="Background" Index="1"/>
+  </Classes>
+  <Transformations NTransformations="0"/>
+  <MVAPdfs>
+    <PDF Name="LD_PDFSig" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="LD_tr_S_original" NBins="50" XMin="-1.8236173391342163e+00" XMax="3.1480097770690918e+00" HasEquidistantBins="1">
+        0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.00570696e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 3.21826228e-01 1.03587817e+00 1.55884579e+00 2.35335429e+00 2.46398206e+00 1.03587817e+00 4.72682272e-01 3.21826228e-01 1.91084323e-01 4.02282785e-02 8.04565569e-02 5.02853481e-02 1.00570696e-02 2.01141392e-02 1.00570696e-02 3.01712088e-02 0.00000000e+00 2.01141392e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.00570696e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.00570696e-02 0.00000000e+00 1.00570696e-02 
+      </Histogram>
+    </PDF>
+    <PDF Name="LD_PDFBkg" MinNSmooth="10" MaxNSmooth="10" InterpolMethod="2" KDE_type="1" KDE_iter="1" KDE_border="1" KDE_finefactor="1.0000000000000000e+00">
+      <Histogram Name="LD_tr_B_original" NBins="50" XMin="-1.8236173391342163e+00" XMax="3.1480097770690918e+00" HasEquidistantBins="1">
+        1.00671368e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.00671368e-02 0.00000000e+00 1.00671368e-02 2.01342735e-02 1.00671368e-02 6.04028205e-02 1.91275598e-01 6.24162479e-01 5.03356838e+00 2.22483722e+00 1.03691509e+00 3.92618333e-01 2.21477009e-01 7.04699573e-02 3.02014103e-02 4.02685470e-02 2.01342735e-02 3.02014103e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.00671368e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 1.00671368e-02 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 0.00000000e+00 
+      </Histogram>
+    </PDF>
+  </MVAPdfs>
+  <Weights NOut="1" NCoeff="5">
+    <Coefficient IndexOut="0" IndexCoeff="0" Value="-1.3194446579809713e-01"/>
+    <Coefficient IndexOut="0" IndexCoeff="1" Value="1.0807741431006520e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="2" Value="-8.7609456015581046e-03"/>
+    <Coefficient IndexOut="0" IndexCoeff="3" Value="-7.6861682282084107e-02"/>
+    <Coefficient IndexOut="0" IndexCoeff="4" Value="-3.7045025067221817e-03"/>
+  </Weights>
+</MethodSetup>
