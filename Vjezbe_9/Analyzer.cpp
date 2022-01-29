@@ -79,7 +79,7 @@ void Analyzer::PlotHistogram()
     c->SaveAs("poluraspad.png");
 
     Double_t tau_analytical = sum_t/nentries;
-/*greska?!*/    Double_t err_analytical = TMath::Sqrt( N_0/TMath::Power(tau_analytical,3) * TMath::Exp(-sum_t/tau_analytical) * ( TMath::Power(sum_t/tau_analytical,2) - 4.*sum_t/tau_analytical + 2. ) );
+    Double_t err_analytical = TMath::Sqrt( TMath::Power(tau_analytical,3) / (2.*sum_t - nentries*tau_analytical) );
 
     Double_t tau_logmin = f_logL->GetMinimumX();
     Double_t err_logmin_left = tau_logmin - f_logL->GetX(f_logL->GetMinimum()+1., 0.5, tau_logmin); //ogranicih domenu potrage
@@ -88,7 +88,7 @@ void Analyzer::PlotHistogram()
     std::cout << "\nParameter estimation via function fitting:\n";
     std::cout << "  tau = " << tau_fit << " +- " << fja->GetParError(0) << std::endl;
     std::cout << "Parameter estimation using Max likelihood method:\n";
-    std::cout << "  tau = " << tau_analytical << " +- " << err_analytical << " KRIVO" << std::endl;
+    std::cout << "  tau = " << tau_analytical << " +- " << err_analytical << std::endl;
     std::cout << "Parameter estimation using -2lnL:\n";
     std::cout << "  tau = " << tau_logmin << " + " << err_logmin_right << " - " << err_logmin_left << std::endl;
 }
