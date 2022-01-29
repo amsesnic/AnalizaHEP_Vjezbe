@@ -264,7 +264,7 @@ void Analyzer::PlotHistogram(TString dir_name)
     leg_BDT->Draw();
 
     
-    c->Print("4l-distribucije-"+dir_name+".png");
+    //c->Print("4l-distribucije-"+dir_name+".png"); // VJEZBE 7
 
 
     /****** CRTANJE MASE 4 LEPTONA = HIGGS ******/    
@@ -278,7 +278,7 @@ void Analyzer::PlotHistogram(TString dir_name)
         h_m4l_higgs->SetLineColor(kPink-6);
         h_m4l_higgs->SetFillColor(kPink+2);
         h_m4l_higgs->Draw("hist");
-        c_H->Print("4l-masa-"+dir_name+".png");
+        //c_H->Print("4l-masa-"+dir_name+".png"); // VJEZBE 7
     }
     else if(dir_name == "qqZZ"){
         h_m4l_pozadina->SetTitle("4 leptons mass");
@@ -287,7 +287,7 @@ void Analyzer::PlotHistogram(TString dir_name)
         h_m4l_pozadina->SetLineColor(kBlue+2);
         h_m4l_pozadina->SetFillColor(kAzure-4);
         h_m4l_pozadina->Draw("hist");
-        c_H->Print("4l-masa-"+dir_name+".png");
+        //c_H->Print("4l-masa-"+dir_name+".png"); // VJEZBE 7
     }
     else {cout << "Krivo ime direktorija" << dir_name << endl; return;}
 
@@ -375,31 +375,31 @@ void Analyzer::PlotPublicHistograms()
     f_bw->SetParName(0, "D");
     f_bw->SetParName(1, "#Gamma");
     f_bw->SetParName(2, "M");
-    f_bw->SetParameter("D", 8311.);
-    f_bw->SetParameter("#Gamma", 837.);
+    f_bw->SetParameter("D", 4130.);
+    f_bw->SetParameter("#Gamma", 823.);
     f_bw->SetParameter("M", 124.6);
 
     TF1 *f_sq = new TF1("f_sq", "[0] + [1]*x + [2]*x^2", 110, 150);
     f_sq->SetParName(0, "A");
     f_sq->SetParName(1, "B");
     f_sq->SetParName(2, "C");
-    f_sq->SetParameter("A", 34.);
-    f_sq->SetParameter("B", -0.46);
-    f_sq->SetParameter("C", -0.0018);
+    f_sq->SetParameter("A", 17.);
+    f_sq->SetParameter("B", -0.22);
+    f_sq->SetParameter("C", 0.0008);
 
     TF1 *f_sum = new TF1("f_sum", "[0]*[1]/( (x^2 - [2]^2)^2 + 0.25*[1]^2 )  +  [3] + [4]*x + [5]*x^2", 110, 150);
     f_sum->SetParName(0, "D");
     f_sum->SetParName(1, "#Gamma");
     f_sum->SetParName(2, "M");
-    f_sum->SetParameter("D", 8311.);
-    f_sum->SetParameter("#Gamma", 837.);
+    f_sum->SetParameter("D", 4130.);
+    f_sum->SetParameter("#Gamma", 823.);
     f_sum->SetParameter("M", 124.6);
     f_sum->SetParName(3, "A");
     f_sum->SetParName(4, "B");
     f_sum->SetParName(5, "C");
-    f_sum->SetParameter("A", 34.);
-    f_sum->SetParameter("B", -0.46);
-    f_sum->SetParameter("C", -0.0018);
+    f_sum->SetParameter("A", 16.);
+    f_sum->SetParameter("B", -0.22);
+    f_sum->SetParameter("C", 0.0008);
   
 
     f_bw->SetLineColor(kRed);
@@ -410,6 +410,7 @@ void Analyzer::PlotPublicHistograms()
     f_sum->Draw();
     f_bw->Draw("same");
     f_sq->Draw("same");
+    f_sum->GetYaxis()->SetRangeUser(0., 24.); //nakon crtanja! ne radi
 
     TLegend *leg  = new TLegend(0.5, 0.7, 0.9, 0.9); //koordinate dvaju vrhova
     leg->AddEntry(f_bw, "BW(x)=#frac{D#Gamma}{(x^{2}-M^{2})^{2} + 0.25#Gamma^{2}}", "l");
@@ -421,6 +422,7 @@ void Analyzer::PlotPublicHistograms()
     c1->cd(2);
     h_m4l_higgs->Fit(f_sum);
     gStyle->SetOptFit();
+
 
     c1->SaveAs("4l-masa-higg+pozadina.png");
 
@@ -453,7 +455,7 @@ void Analyzer::PlotPublicHistograms()
     leg2->AddEntry(h_Dkin_bkg, "background", "l");
     leg2->Draw();
 
-    c2->SaveAs("KinDiscriminants.png");
+    //c2->SaveAs("KinDiscriminants.png"); // VJEZBE 7
 
 
 
@@ -494,7 +496,7 @@ void Analyzer::PlotPublicHistograms()
     h_2d_sig->Draw("colz");
 
 
-    c3->SaveAs("2Dhistos.png");
+    //c3->SaveAs("2Dhistos.png"); // VJEZBE 7
 
     delete c1;
     delete c2;
