@@ -5,7 +5,7 @@ int main(){
     Analyzer *a = new Analyzer();
 
     a->Loop();
-    a->MVATraining();
+    //a->MVATraining();
 
     delete a;
  

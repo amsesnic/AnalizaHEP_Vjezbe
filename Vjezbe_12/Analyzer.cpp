@@ -432,43 +432,38 @@ void Analyzer::MVATraining()
 
 void Analyzer::Loop()
 {
-//   In a ROOT session, you can do:
-//      root> .L Analyzer.C
-//      root> Analyzer t
-//      root> t.GetEntry(12); // Fill t data members with entry number 12
-//      root> t.Show();       // Show values of entry 12
-//      root> t.Show(16);     // Read and show values of entry 16
-//      root> t.Loop();       // Loop on all entries
-//
-
-//     This is the loop skeleton where:
-//    jentry is the global entry number in the chain
-//    ientry is the entry number in the current Tree
-//  Note that the argument to GetEntry must be:
-//    jentry for TChain::GetEntry
-//    ientry for TTree::GetEntry and TBranch::GetEntry
-//
-//       To read only selected branches, Insert statements like:
-// METHOD1:
-//    fChain->SetBranchStatus("*",0);  // disable all branches
-//    fChain->SetBranchStatus("branchname",1);  // activate branchname
-// METHOD2: replace line
-//    fChain->GetEntry(jentry);       //read all branches
-//by  b_branchname->GetEntry(ientry); //read only this branch
-
-
    TH1F *h_ele_pt[2];  // i=1 za background, i=2 signal
-   h_ele_pt[1] = new TH1F("B_ele_pt", "B_ele_pt", 50, 0., 100.);
-   h_ele_pt[2] = new TH1F("S_ele_pt", "S_ele_pt", 50, 0., 100.);
+   h_ele_pt[1] = new TH1F("B_ele_pt", "B_ele_pt", 100, 0., 100.);
+   h_ele_pt[2] = new TH1F("S_ele_pt", "S_ele_pt", 100, 0., 100.);
 
    // dovrsi inicijalizaciju i napuni ih u Loopu
    TH1F *h_scl_eta[2];
+   h_scl_eta[1] = new TH1F("B_scl_eta", "B_scl_eta", 100, -5., 5.);
+   h_scl_eta[2] = new TH1F("S_scl_eta", "S_scl_eta", 100, -5., 5.);
+
    TH1F *h_ele_hadronicOverEm[2];
+   h_ele_hadronicOverEm[1] = new TH1F("B_ele_hadronicOverEm", "B_ele_hadronicOverEm", 40, 0., 0.2);
+   h_ele_hadronicOverEm[2] = new TH1F("S_ele_hadronicOverEm", "S_ele_hadronicOverEm", 40, 0., 0.2);
+
    TH1F *h_ele_gsfchi2[2];
+   h_ele_gsfchi2[1] = new TH1F("B_ele_gsfchi2", "B_ele_gsfchi2", 50, 0., 10.);
+   h_ele_gsfchi2[2] = new TH1F("S_ele_gsfchi2", "S_ele_gsfchi2", 50, 0., 10.);
+
    TH1F *h_ele_fbrem[2];
+   h_ele_fbrem[1] = new TH1F("B_ele_fbrem", "B_ele_fbrem", 50, -2., 2.);
+   h_ele_fbrem[2] = new TH1F("S_ele_fbrem", "S_ele_fbrem", 50, -2., 2.);
+
    TH1F *h_ele_ep[2];
+   h_ele_ep[1] = new TH1F("B_ele_ep", "B_ele_ep", 50, 0., 6.);
+   h_ele_ep[2] = new TH1F("S_ele_ep", "S_ele_ep", 50, 0., 6.);
+
    TH1F *h_ele_eelepout[2];
+   h_ele_eelepout[1] = new TH1F("B_ele_eelepout", "B_ele_eelepout", 50, 0., 22.);
+   h_ele_eelepout[2] = new TH1F("S_ele_eelepout", "S_ele_eelepout", 50, 0., 22.);
+
    TH1F *h_ele_pfChargedHadIso[2];
+   h_ele_pfChargedHadIso[1] = new TH1F("B_ele_pfChargedHadIso", "B_ele_pfChargedHadIso", 50, 0., 4.);
+   h_ele_pfChargedHadIso[2] = new TH1F("S_ele_pfChargedHadIso", "S_ele_pfChargedHadIso", 50, 0., 4.);
 
 
    /************************* LOOP BACKGROUND ************************/
@@ -490,9 +485,14 @@ void Analyzer::Loop()
       //KONTROLNI ISPIS
       //if(jentry%10000==0) std::cout << jentry << "\t" << ele_pt << "\n";
 
-      h_ele_pt[1]->Fill(ele_pt);
-
-
+      h_ele_pt[1] ->Fill(ele_pt);
+      h_scl_eta[1]->Fill(scl_eta);
+      h_ele_hadronicOverEm[1] ->Fill(ele_hadronicOverEm);
+      h_ele_gsfchi2[1]->Fill(ele_gsfchi2);
+      h_ele_fbrem[1]->Fill(ele_fbrem);
+      h_ele_ep[1]->Fill(ele_ep);
+      h_ele_eelepout[1]->Fill(ele_eelepout);
+      h_ele_pfChargedHadIso[1]->Fill(ele_pfChargedHadIso);
    }
    /******************************************************************/
    /************************** LOOP SIGNAL ***************************/
@@ -515,14 +515,20 @@ void Analyzer::Loop()
       //if(jentry%10000==0) std::cout << jentry << "\t" << ele_pt << "\n";
 
       h_ele_pt[2]->Fill(ele_pt);
-
+      h_scl_eta[2]->Fill(scl_eta);
+      h_ele_hadronicOverEm[2] ->Fill(ele_hadronicOverEm);
+      h_ele_gsfchi2[2]->Fill(ele_gsfchi2);
+      h_ele_fbrem[2]->Fill(ele_fbrem);
+      h_ele_ep[2]->Fill(ele_ep);
+      h_ele_eelepout[2]->Fill(ele_eelepout);
+      h_ele_pfChargedHadIso[2]->Fill(ele_pfChargedHadIso);
    }
    /******************************************************************/
 
    
 
    //ZAD 2: crtam histograme na jednom platnu
-   TCanvas *c = new TCanvas("c", "electrons", 0,0,1200,800);
+   TCanvas *c = new TCanvas("c", "electrons", 0,0,1600,800);
 
    c->Divide(4,2);
    gStyle->SetOptStat(0);
@@ -531,12 +537,74 @@ void Analyzer::Loop()
    /* EL_PT */
    c->cd(1);
    gPad->SetLeftMargin(0.15);
-
    h_ele_pt[1]->SetLineColor(kBlue);
    h_ele_pt[2]->SetLineColor(kRed);
-   h_ele_pt[1]->SetTitle("Transversal momentum;p_{t};number of events");
+   h_ele_pt[1]->SetTitle("Transversal momentum; p_{t}; number of events");
    h_ele_pt[1]->Draw("hist");
    h_ele_pt[2]->Draw("hist same");
+
+   /* SCL_ETA */
+   c->cd(2);
+   gPad->SetLeftMargin(0.15);
+   h_scl_eta[1]->SetLineColor(kBlue);
+   h_scl_eta[2]->SetLineColor(kRed);
+   h_scl_eta[2]->SetTitle("scl_eta; scl_eta; number of events");
+   h_scl_eta[2]->Draw("hist");
+   h_scl_eta[1]->Draw("hist same");
+
+   /* ELE_HADRONICOVEREM */
+   c->cd(3);
+   gPad->SetLeftMargin(0.15);
+   h_ele_hadronicOverEm[1]->SetLineColor(kBlue);
+   h_ele_hadronicOverEm[2]->SetLineColor(kRed);
+   h_ele_hadronicOverEm[2]->SetTitle("ele_hadronicOverEm; ele_hadronicOverEm; number of events");
+   h_ele_hadronicOverEm[2]->Draw("hist");
+   h_ele_hadronicOverEm[1]->Draw("hist same");
+
+   /* ELE_GSFCHI2 */
+   c->cd(4);
+   gPad->SetLeftMargin(0.15);
+   h_ele_gsfchi2[1]->SetLineColor(kBlue);
+   h_ele_gsfchi2[2]->SetLineColor(kRed);
+   h_ele_gsfchi2[2]->SetTitle("ele_gsfchi2; ele_gsfchi2; number of events");
+   h_ele_gsfchi2[2]->Draw("hist");
+   h_ele_gsfchi2[1]->Draw("hist same");
+
+   /* ELE_FBREM */
+   c->cd(5);
+   gPad->SetLeftMargin(0.15);
+   h_ele_fbrem[1]->SetLineColor(kBlue);
+   h_ele_fbrem[2]->SetLineColor(kRed);
+   h_ele_fbrem[1]->SetTitle("ele_fbrem; ele_fbrem; number of events");
+   h_ele_fbrem[1]->Draw("hist");
+   h_ele_fbrem[2]->Draw("hist same");
+
+   /* ELE_EP */
+   c->cd(6);
+   gPad->SetLeftMargin(0.15);
+   h_ele_ep[1]->SetLineColor(kBlue);
+   h_ele_ep[2]->SetLineColor(kRed);
+   h_ele_ep[2]->SetTitle("ele_ep; ele_ep; number of events");
+   h_ele_ep[2]->Draw("hist");
+   h_ele_ep[1]->Draw("hist same");
+
+   /* ELE_EELEPOUT */
+   c->cd(7);
+   gPad->SetLeftMargin(0.15);
+   h_ele_eelepout[1]->SetLineColor(kBlue);
+   h_ele_eelepout[2]->SetLineColor(kRed);
+   h_ele_eelepout[2]->SetTitle("ele_eelepout; ele_eelepout; number of events");
+   h_ele_eelepout[2]->Draw("hist");
+   h_ele_eelepout[1]->Draw("hist same");
+
+   /* ELE_PFCHARGEDHADISO */
+   c->cd(8);
+   gPad->SetLeftMargin(0.15);
+   h_ele_pfChargedHadIso[1]->SetLineColor(kBlue);
+   h_ele_pfChargedHadIso[2]->SetLineColor(kRed);
+   h_ele_pfChargedHadIso[2]->SetTitle("ele_pfChargedHadIso; ele_pfChargedHadIso; number of events");
+   h_ele_pfChargedHadIso[2]->Draw("hist");
+   h_ele_pfChargedHadIso[1]->Draw("hist same");
 
    c->SaveAs("distributions.png");
 
