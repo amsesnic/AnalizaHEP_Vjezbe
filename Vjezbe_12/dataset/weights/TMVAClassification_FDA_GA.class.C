@@ -10,7 +10,7 @@ Method         : FDA::FDA_GA
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.24/06       [399366]
 Creator        : asesnic
-Date           : Tue Jan 18 23:45:06 2022
+Date           : Sun Jan 30 15:51:05 2022
 Host           : Linux buildhw-x86-15.iad2.fedoraproject.org 5.15.6-200.fc35.x86_64 #1 SMP Wed Dec 1 13:41:10 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/asesnic/Vjezbe/Vjezbe_12
 Training events: 2000
@@ -38,9 +38,9 @@ Converger: "None" [FitMethod uses Converger to improve result]
 
 NVar 4
 ele_pt                        ele_pt                        ele_pt                        ele_pt                                                          'F'    [5.00599241257,306.198883057]
-scl_eta                       scl_eta                       scl_eta                       Expression 2                                                    'F'    [-2.55902075768,2.58148694038]
-ele_hadronicOverEm            ele_hadronicOverEm            ele_hadronicOverEm            Variable 3                    units                             'F'    [0,21.1394309998]
-ele_gsfchi2                   ele_gsfchi2                   ele_gsfchi2                   Variable 4                    units                             'F'    [0.193670883775,190.824783325]
+scl_eta                       scl_eta                       scl_eta                       scl_eta                                                         'F'    [-2.55902075768,2.58148694038]
+ele_fbrem                     ele_fbrem                     ele_fbrem                     ele_fbrem                                                       'F'    [-1,0.991997241974]
+ele_ep                        ele_ep                        ele_ep                        ele_ep                                                          'F'    [0.000418868934503,20]
 NSpec 0
 
 
@@ -87,7 +87,7 @@ class ReadFDA_GA : public IClassifierReader {
         fNvars( 4 )
    {
       // the training input variables
-      const char* inputVars[] = { "ele_pt", "scl_eta", "ele_hadronicOverEm", "ele_gsfchi2" };
+      const char* inputVars[] = { "ele_pt", "scl_eta", "ele_fbrem", "ele_ep" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -174,10 +174,10 @@ class ReadFDA_GA : public IClassifierReader {
 
 inline void ReadFDA_GA::Initialize() 
 {
-   fParameter[0] = 0;
+   fParameter[0] = 0.142178057713303;
    fParameter[1] = 0;
    fParameter[2] = 0;
-   fParameter[3] = 0;
+   fParameter[3] = 1.0134934354273;
    fParameter[4] = 0;
 }
 

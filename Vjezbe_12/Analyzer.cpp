@@ -1,6 +1,54 @@
 #define Analyzer_cxx
 #include "Analyzer.h"
 
+void Analyzer::MVAPlotResults()
+{
+    TFile *input_file = new TFile("TMVA.root");
+
+    TH1D *h_signal_MLP = (TH1D*)input_file->Get("dataset/Method_MLP/MLPBNN/MVA_MLPBNN_S");
+    TH1D *h_background_MLP = (TH1D*)input_file->Get("dataset/Method_MLP/MLPBNN/MVA_MLPBNN_B");
+    TH1D *h_eff_MLP = (TH1D*)input_file->Get("dataset/Method_MLP/MLPBNN/MVA_MLPBNN_effBvsS");
+
+    TH1D *h_signal_BDT = (TH1D*)input_file->Get("dataset/Method_BDT/BDT/MVA_BDT_S");
+    TH1D *h_background_BDT = (TH1D*)input_file->Get("dataset/Method_BDT/BDT/MVA_BDT_B");
+    TH1D *h_eff_BDT = (TH1D*)input_file->Get("dataset/Method_BDT/BDT/MVA_BDT_effBvsS");
+
+    TCanvas *c1 = new TCanvas("c1","MLP method",0,0,1200,600);
+    c1->Divide(2);
+
+    c1->cd(1);
+    h_signal_MLP->SetLineColor(kRed);
+    h_background_MLP->SetLineColor(kBlue);
+    h_signal_MLP->SetTitle("MVA results for MLP method");
+    h_signal_MLP->Draw();
+    h_background_MLP->Draw("same");
+
+    c1->cd(2);
+    h_eff_MLP->SetLineColor(kViolet);
+    h_eff_MLP->SetTitle("Efficiency for MLP method");
+    h_eff_MLP->Draw();
+
+    c1->SaveAs("MLP_method.png");
+
+    TCanvas *c2 = new TCanvas("c2","BDT method",0,0,1200,600);
+    c2->Divide(2);
+
+    c2->cd(1);
+    h_signal_BDT->SetLineColor(kRed);
+    h_background_BDT->SetLineColor(kBlue);
+    h_signal_BDT->SetTitle("MVA results for BDT method");
+    h_signal_BDT->Draw();
+    h_background_BDT->Draw("same");
+
+    c2->cd(2);
+    h_eff_BDT->SetLineColor(kViolet);
+    h_eff_BDT->SetTitle("Efficiency for BDT method");
+    h_eff_BDT->Draw();
+
+    c2->SaveAs("BDT_method.png");
+
+}
+
 void Analyzer::MVATraining()
 {
    // The explicit loading of the shared libTMVA is done in TMVAlogon.C, defined in .rootrc
@@ -15,8 +63,8 @@ void Analyzer::MVATraining()
    // Default MVA methods to be trained + tested
    std::map<std::string,int> Use;
    // Cut optimisation
-   Use["Cuts"]            = 1;
-   Use["CutsD"]           = 1;
+   Use["Cuts"]            = 0;
+   Use["CutsD"]           = 0;
    Use["CutsPCA"]         = 0;
    Use["CutsGA"]          = 0;
    Use["CutsSA"]          = 0;
@@ -24,17 +72,17 @@ void Analyzer::MVATraining()
    // 1-dimensional likelihood ("naive Bayes estimator")
    Use["Likelihood"]      = 1;
    Use["LikelihoodD"]     = 0; // the "D" extension indicates decorrelated input variables (see option strings)
-   Use["LikelihoodPCA"]   = 1; // the "PCA" extension indicates PCA-transformed input variables (see option strings)
+   Use["LikelihoodPCA"]   = 0; // the "PCA" extension indicates PCA-transformed input variables (see option strings)
    Use["LikelihoodKDE"]   = 0;
    Use["LikelihoodMIX"]   = 0;
    //
    // Mutidimensional likelihood and Nearest-Neighbour methods
-   Use["PDERS"]           = 1;
+   Use["PDERS"]           = 0;
    Use["PDERSD"]          = 0;
    Use["PDERSPCA"]        = 0;
-   Use["PDEFoam"]         = 1;
+   Use["PDEFoam"]         = 0;
    Use["PDEFoamBoost"]    = 0; // uses generalised MVA method boosting
-   Use["KNN"]             = 1; // k-nearest neighbour method
+   Use["KNN"]             = 0; // k-nearest neighbour method
    //
    // Linear Discriminant Analysis
    Use["LD"]              = 1; // Linear Discriminant identical to Fisher
@@ -44,7 +92,7 @@ void Analyzer::MVATraining()
    Use["HMatrix"]         = 0;
    //
    // Function Discriminant analysis
-   Use["FDA_GA"]          = 1; // minimisation of user-defined function using Genetics Algorithm
+   Use["FDA_GA"]          = 0; // minimisation of user-defined function using Genetics Algorithm
    Use["FDA_SA"]          = 0;
    Use["FDA_MC"]          = 0;
    Use["FDA_MT"]          = 0;
@@ -71,7 +119,7 @@ void Analyzer::MVATraining()
    Use["BDTF"]            = 0; // allow usage of fisher discriminant for node splitting
    //
    // Friedman's RuleFit method, ie, an optimised series of cuts ("rules")
-   Use["RuleFit"]         = 1;
+   Use["RuleFit"]         = 0;
    // ---------------------------------------------------------------
    std::cout << std::endl;
    std::cout << "==> Start TMVAClassification" << std::endl;
@@ -147,9 +195,9 @@ void Analyzer::MVATraining()
    dataloader->AddVariable( "var4",                "Variable 4", "units", 'F' );
    ***/
    dataloader->AddVariable( "ele_pt", 'F' );
-   dataloader->AddVariable( "scl_eta", "Expression 2", "", 'F' );
-   dataloader->AddVariable( "ele_hadronicOverEm",                "Variable 3", "units", 'F' );
-   dataloader->AddVariable( "ele_gsfchi2",                "Variable 4", "units", 'F' );	
+   dataloader->AddVariable( "scl_eta", "scl_eta", "", 'F' );
+   dataloader->AddVariable( "ele_fbrem", "ele_fbrem", "", 'F' );
+   dataloader->AddVariable( "ele_ep", "ele_ep", "", 'F' );	
    // You can add so-called "Spectator variables", which are not used in the MVA training,
    // but will appear in the final "TestTree" produced by TMVA. This TestTree will contain the
    // input variables, the response values of all trained MVAs, and the spectator variables

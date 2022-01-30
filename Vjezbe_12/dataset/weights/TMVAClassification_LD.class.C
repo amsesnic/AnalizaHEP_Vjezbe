@@ -10,7 +10,7 @@ Method         : LD::LD
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.24/06       [399366]
 Creator        : asesnic
-Date           : Tue Jan 18 23:45:05 2022
+Date           : Sun Jan 30 20:20:42 2022
 Host           : Linux buildhw-x86-15.iad2.fedoraproject.org 5.15.6-200.fc35.x86_64 #1 SMP Wed Dec 1 13:41:10 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /home/asesnic/Vjezbe/Vjezbe_12
 Training events: 2000
@@ -34,9 +34,9 @@ IgnoreNegWeightsInTraining: "False" [Events with negative weights are ignored in
 
 NVar 4
 ele_pt                        ele_pt                        ele_pt                        ele_pt                                                          'F'    [5.00599241257,306.198883057]
-scl_eta                       scl_eta                       scl_eta                       Expression 2                                                    'F'    [-2.55902075768,2.58148694038]
-ele_hadronicOverEm            ele_hadronicOverEm            ele_hadronicOverEm            Variable 3                    units                             'F'    [0,21.1394309998]
-ele_gsfchi2                   ele_gsfchi2                   ele_gsfchi2                   Variable 4                    units                             'F'    [0.193670883775,190.824783325]
+scl_eta                       scl_eta                       scl_eta                       scl_eta                                                         'F'    [-2.55902075768,2.58148694038]
+ele_fbrem                     ele_fbrem                     ele_fbrem                     ele_fbrem                                                       'F'    [-1,0.991997241974]
+ele_ep                        ele_ep                        ele_ep                        ele_ep                                                          'F'    [0.000418868934503,20]
 NSpec 0
 
 
@@ -83,7 +83,7 @@ class ReadLD : public IClassifierReader {
         fNvars( 4 )
    {
       // the training input variables
-      const char* inputVars[] = { "ele_pt", "scl_eta", "ele_hadronicOverEm", "ele_gsfchi2" };
+      const char* inputVars[] = { "ele_pt", "scl_eta", "ele_fbrem", "ele_ep" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -170,11 +170,11 @@ class ReadLD : public IClassifierReader {
 
 inline void ReadLD::Initialize() 
 {
-   fLDCoefficients.push_back( -0.131944465798 );
-   fLDCoefficients.push_back( 0.010807741431 );
-   fLDCoefficients.push_back( -0.00876094560156 );
-   fLDCoefficients.push_back( -0.0768616822821 );
-   fLDCoefficients.push_back( -0.00370450250672 );
+   fLDCoefficients.push_back( -0.166379805594 );
+   fLDCoefficients.push_back( 0.0107257034166 );
+   fLDCoefficients.push_back( -0.010213041834 );
+   fLDCoefficients.push_back( 0.268656373306 );
+   fLDCoefficients.push_back( -0.029528380061 );
 
    // sanity check
    if (fLDCoefficients.size() != fNvars+1) {

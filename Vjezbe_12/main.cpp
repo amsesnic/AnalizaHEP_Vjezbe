@@ -4,8 +4,9 @@ int main(){
 
     Analyzer *a = new Analyzer();
 
-    a->Loop();
+    //a->Loop();
     //a->MVATraining();
+    a->MVAPlotResults();
 
     delete a;
  
