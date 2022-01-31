@@ -17,6 +17,8 @@
 #include <TRandom3.h>
 #include <iostream>
 #include <TMath.h>
+#include <TLine.h>
+#include <TLegend.h>
 
 // Header file for the classes stored in the TTree if any.
 
