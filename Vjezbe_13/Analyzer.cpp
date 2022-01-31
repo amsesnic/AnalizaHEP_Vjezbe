@@ -60,6 +60,7 @@ void Analyzer::GenerateTstatistic()
 
     TCanvas *c = new TCanvas("c", "test statistic", 0,0,1000,800);
     gStyle->SetOptStat(0);
+    gPad->SetLeftMargin(0.15);
 
     TLine *line = new TLine(tStat, 0., tStat, hist_sp->GetBinContent(hist_sp->GetMaximumBin()) );
     line->SetLineColor(kGray);
