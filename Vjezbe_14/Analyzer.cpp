@@ -5,58 +5,59 @@
 void Analyzer::GenerateTstatistic()
 {
     const double zeta = 100., Pvalue = 0.05;
-    const int Nevents = 1.0e4, Mexperiments = 1000, sirinaProzora = 20, histoXmax = 400.;
+    const int Nevents = 1.0e4, Mexperiments = 1000, sirinaProzora = 20, sirinaBina = 5., histoXmax = 600.;
     Double_t masaFotona, xmin, xmax, xProzor, chi2;
     int Nprozora = histoXmax/sirinaProzora;
+    int brojBinova = histoXmax/sirinaBina;
+
+    TCanvas *c = new TCanvas("c", "pdf", 0,0,1000,800);
 
     TRandom3 *rand_gen = new TRandom3();
-    TH1F *h_tstat = new TH1F("t statistic", "t statistic", 100., 0., 400.);
-    TH1F *h_pdf  = new TH1F("pdf", "pdf", 100., 0., histoXmax);
+    TH1F *h_tstat = new TH1F("t_statistic", "t statistic;t;g(t, H_{0})", 100., 0., 20.); // ne znan dokle ce ici vrijednost chi2 -> promijenila nakon sto sam vidjela graf
+    TH1F *h_pdf  = new TH1F("pdf", "pdf for photon mass;m_{#gamma#gamma};PDF(m_{#gamma#gamma})", brojBinova, 0., histoXmax); // kaze "koraci po 5 GeV" -> valjda misli na sirinu bina u pdf-u?
 
-    TF1 *f_pdf;
-    
+    TF1 *f_pdf = new TF1("f_pdf", "[0]*exp(-x/[1])", 0., histoXmax);
+    f_pdf->FixParameter(1, zeta);
+    f_pdf->SetParameter(0, 1.);
+    f_pdf->SetParNames("N_{SM}", "#zeta_{SM}");
+    f_pdf->SetParError(0, 5); //mozda je ovo taj step size?
+
     for(int j = 0; j < Mexperiments; j++){
 
         h_pdf->Reset(); //isprazni h_pdf
         for(int i = 0; i < Nevents; i++){
             masaFotona = rand_gen->Exp(zeta);
-            if(j==0 && i%10==0) std::cout << masaFotona << "\n";
-            
+            //if(j==0 && i%1000==0) std::cout << masaFotona << "\n";
             h_pdf->Fill(masaFotona);
-            h_pdf->Scale( 1.0/h_pdf->Integral() );
         }
+        h_pdf->Scale( 1.0/h_pdf->Integral() );
         
         // I sad nakon svakog eksperimenta fitat po prozorima sirine 20 GeV-a
         for(int k = 0; k < Nprozora; k++){
             xmin = k*sirinaProzora;
             xmax = xmin + sirinaProzora;
-            //std::cout << xmin << "   " << xmax << "\n";
-            f_pdf = new TF1("f_pdf", "[0]*exp(-x/[1])", xmin, xmax);
-            f_pdf->FixParameter(1, zeta);
-            f_pdf->SetParameter(0, 1000.);
-            f_pdf->SetParNames("N_{SM}", "#zeta_{SM}");
+            //std::cout << "xmin = " << xmin << "\n" << "xmax = " << xmax << "\n";
+            //f_pdf->SetRange(xmin, xmax); // NE OVO!
 
-            /*auto ptr = h_pdf->Fit(f_pdf);
-            chi2 = ptr->Chi2();*/
-            // ILI
+            h_pdf->Fit(f_pdf, "Q", "", xmin, xmax); // Q=minimum printing, ,fitting range
+
             chi2 = f_pdf->GetChisquare();
-            h_tstat->Fill(chi2);            
-
-        } 
-
-
+            h_tstat->Fill(chi2);
+            //std::cout << "j=" << j << ", fit od " << xmin << " do " << xmax << ", chi2 =" << chi2 << "\n";
+        }
     }
+    h_tstat->Scale( 1.0/h_tstat->Integral() );
 
-    TCanvas *c = new TCanvas("c", "pdf", 0,0,1000,800);
-    gStyle->SetOptStat(0);
+    gStyle->SetOptStat();
     gStyle->SetOptFit();
-    //hist->Scale( 1.0/hist->Integral() );
+    gPad->SetLeftMargin(0.15);
+
     h_pdf->Draw("hist");
     c->SaveAs("pdf.png");
 
-    TCanvas *c1 = new TCanvas("c1", "t statistic", 0,0,1000,800);
+    c->Clear();
     h_tstat->Draw("hist");
-    c1->SaveAs("t_stat_chi2.png");
+    c->SaveAs("t_stat_chi2.png");
 
     /*pValue = hist->Integral( hist->FindBin(tStat), hist->FindBin(170.) );
     std::cout << "P value observed = " << pValue << "\n";
