@@ -5,11 +5,11 @@ Analyzer::Analyzer()
 {
     mH_min = 10.;
     mH_max = 690.;
-    mH_brBinova = 680;
+    mH_brBinova = 136; // sirina bina = 5
     zeta = 100.;
     sirinaProzora = 20;
     tStat_max = 30.;
-    t_brBinova = 100;
+    t_brBinova = 300;
 
     h_tstat  = new TH1F("t_statistic", "t statistic;t;g(t, H_{0})", t_brBinova, 0., tStat_max);
     h_pdf    = new TH1F("pdf", "pdf for photon mass;m_{#gamma#gamma};PDF(m_{#gamma#gamma})", mH_brBinova, mH_min, mH_max);
@@ -17,13 +17,12 @@ Analyzer::Analyzer()
     f_pdf_SM->FixParameter(1, zeta);
     f_pdf_SM->SetParameter(0, 1.);
     f_pdf_SM->SetParNames("N_{SM}", "#zeta_{SM}");
-    f_pdf_SM->SetParError(0, 5); //mozda je ovo taj step size?
+    //f_pdf_SM->SetParError(0, 5); //mozda je ovo taj step size?
 }
 
 void Analyzer::GenerateTstatistic()
 {
-    const double Pvalue = 0.05;
-    const int Nevents = 1.0e4, Mexperiments = 1000;
+    const int Nevents = 1.0e5, Mexperiments = 1000;
     int Nprozora = (mH_max-mH_min)/sirinaProzora;
     Double_t masaFotona, xmin, xmax, chi2;
 
