@@ -9,7 +9,7 @@ Analyzer::Analyzer()
     zeta = 100.;
     sirinaProzora = 20;
     tStat_max = 30.;
-    t_brBinova = 50;
+    t_brBinova = 100;
 
     h_tstat  = new TH1F("t_statistic", "t statistic;t;g(t, H_{0})", t_brBinova, 0., tStat_max);
     h_pdf    = new TH1F("pdf", "pdf for photon mass;m_{#gamma#gamma};PDF(m_{#gamma#gamma})", mH_brBinova, mH_min, mH_max);
@@ -71,7 +71,7 @@ void Analyzer::PvalueScan()
 {
     const int Nevents = 1.0e4, mH_step = 5;
     int Mexperiments = (int)(mH_max-mH_min)/mH_step;
-    Double_t masaFotona, masaHiggsa, xmin, xmax, chi2, t_exp;
+    Double_t masaFotona, masaHiggsa, xmin, xmax, chi2, t_exp, z_score;
     Double_t higgsProbability;
 
     TCanvas *c         = new TCanvas("c", "pdf", 0,0,1000,800);
@@ -113,6 +113,10 @@ void Analyzer::PvalueScan()
 
         std::cout << "p value = " << pValue << "\n";
         g_pvalue->AddPoint(masaHiggsa, pValue);
+
+        z_score = TMath::Sqrt(2)*TMath::ErfcInverse(2*pValue);
+        if (z_score >= 3.)
+            std::cout << "\n    ***** significance greater than 3 sigma:  " << z_score << " *****\n\n";
     }
  
     gStyle->SetOptStat();
@@ -133,10 +137,7 @@ void Analyzer::PvalueScan()
     g_pvalue->GetYaxis()->SetTitle("p value");
     g_pvalue->Draw("ALP");
     c->SaveAs("pValueScan.png");
-/*
-    z_score = TMath::Sqrt(2)*TMath::ErfcInverse(2*pValue);
-    std::cout << "significance observed = " << z_score << "\n";
-*/
+
 }
 
 
