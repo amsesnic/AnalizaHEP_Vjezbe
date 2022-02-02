@@ -20,6 +20,7 @@ int main(){
         std::cout << "C-P interval for " << i << "/" << ukupno << " successful outcomes: [" << pInterval[0] << ", " << pInterval[1] << "]\n";
     }
 
+    a->PojasPouzdanosti(5);
 
     delete a; 
     return 0;
