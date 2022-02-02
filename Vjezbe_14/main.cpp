@@ -4,8 +4,8 @@ int main(){
 
     Analyzer *a = new Analyzer();
 
-    //a->Loop(); //prvo izracunaj t observed
     a->GenerateTstatistic();
+    a->PvalueScan();
 
     delete a;
  
