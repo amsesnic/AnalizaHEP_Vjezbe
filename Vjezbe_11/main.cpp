@@ -22,6 +22,9 @@ int main(){
 
     a->PojasPouzdanosti(5);
 
+    a->Kocka(10,0.6827); // 1 sigma
+    a->Kocka(10,0.954);  // 2 sigma
+
     delete a; 
     return 0;
 }

@@ -31,6 +31,7 @@ public :
    Double_t     Binomial(Int_t r, Double_t p, Int_t N);
    Double_t*    ClopperPearson(Int_t m, Int_t N, Double_t C);
    void         PojasPouzdanosti(Int_t r);
+   void         Kocka(Int_t a, Double_t b);
 
 };
 #endif

@@ -93,12 +93,33 @@ void Analyzer::PojasPouzdanosti(Int_t rOdabrani)
     l1->SetLineStyle(kDashed);
     l2->SetLineStyle(kDashed);
     l3->SetLineStyle(kDashed);
-    l1->Draw("same");
-    l2->Draw("same");
-    l3->Draw("same");
+    l1->Draw();
+    l2->Draw();
+    l3->Draw();
 
     c->SaveAs("NeymanBelt.png");
 
+}
+
+void Analyzer::Kocka(Int_t N, Double_t C)
+{
+    TRandom3* rand = new TRandom3(); 
+    int brojac, brUpada = 0;
+    Double_t *pInterval;
+    Double_t r;
+
+    for (int i=0; i<1000; i++){
+        brojac = 0;
+        for(int j=0; j<N; j++){
+            r = rand->Rndm();
+            if(r < 1./6) brojac++;
+        }
+        pInterval = ClopperPearson(brojac, N, C);
+        if(1./6 <= pInterval[1] && 1./6 >= pInterval[0])
+            brUpada++;
+    }
+	
+    std::cout << "Interval s CL = " << C*100. <<"% sadrzi p true u " << brUpada/1000.*100. << "% slucajeva\n";
 }
 
 
