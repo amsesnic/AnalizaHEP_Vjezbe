@@ -27,6 +27,7 @@ public :
 
    Analyzer();
    Double_t     Binomial(Int_t r, Double_t p, Int_t N);
+   Double_t*    ClopperPearson(Int_t m, Int_t N, Double_t C);
 
 };
 #endif
